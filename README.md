@@ -14,17 +14,17 @@ Este proyecto consiste en un juego de aventuras donde el jugador debe explorar u
 
 ### Integrantes del equipo
 
-1. **Nombre completo:** Alonzo Gómez Astrid Adamaris
+1. **Nombre completo:** Alonzo Gómez, Astrid Adamaris
    **Carnet:** 00091525
 
-2. **Nombre completo:** [Nombre del estudiante 2]  
-   **Carnet:** [Carnet del estudiante 2]
+2. **Nombre completo:** Barrera Gómez, Heraldo Riquelmy 
+   **Carnet:** 00226325 
 
-3. **Nombre completo:** [Nombre del estudiante 3]  
-   **Carnet:** [Carnet del estudiante 3]
+3. **Nombre completo:** Cornejo Miranda, Steven Eduardo    
+   **Carnet:** 00177125 
 
-4. **Nombre completo:** [Nombre del estudiante 4]  
-   **Carnet:** [Carnet del estudiante 4]
+4. **Nombre completo:** Escobar Arteaga, Rosario Guadalupe 
+   **Carnet:** 00235325 
 
 ## Instrucciones de Ejecución
 
