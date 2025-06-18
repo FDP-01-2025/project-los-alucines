@@ -10,12 +10,12 @@ Este proyecto consiste en un juego de aventuras donde el jugador debe explorar u
 
 ## Equipo
 
-- **Nombre del equipo:** [Nombre del equipo]
+- **Nombre del equipo:** Los alucines.
 
 ### Integrantes del equipo
 
-1. **Nombre completo:** [Nombre del estudiante 1]  
-   **Carnet:** [Carnet del estudiante 1]
+1. **Nombre completo:** Alonzo Gómez Astrid Adamaris
+   **Carnet:** 00091525
 
 2. **Nombre completo:** [Nombre del estudiante 2]  
    **Carnet:** [Carnet del estudiante 2]
@@ -23,7 +23,8 @@ Este proyecto consiste en un juego de aventuras donde el jugador debe explorar u
 3. **Nombre completo:** [Nombre del estudiante 3]  
    **Carnet:** [Carnet del estudiante 3]
 
-(Agregar más integrantes si es necesario)
+4. **Nombre completo:** [Nombre del estudiante 4]  
+   **Carnet:** [Carnet del estudiante 4]
 
 ## Instrucciones de Ejecución
 
