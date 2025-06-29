@@ -1,12 +1,11 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/mi1WNrHU)
-# Proyecto de C++ - [Nombre del Juego]
+# Proyecto de C++ - Casino "Kyoto Rasecourse"
 
 ## Descripción del Proyecto
 
-Breve descripción del juego, su propósito, cómo se juega y cualquier otro detalle importante que describa la idea general del proyecto.
+Un casino famoso de Japón llamado “Kyoto Rasecourse” el cual constara de 4 juegos principales los cuales serán: Póker, ruleta, bingo y dados; permitiendo realizar diversas apuestas con multijugadores en los juegos mencionados. 
 
-**Por ejemplo:**
-Este proyecto consiste en un juego de aventuras donde el jugador debe explorar un mundo virtual, recoger objetos, resolver acertijos y enfrentar enemigos. El juego utiliza estructuras de control como `if`, `switch`, y bucles `while` y `for` para generar interacciones dinámicas.
+La noche iniciará con una apuesta principal la cual partirá con un monto fijo, dicho monto podrá desglosarse en apuestas más pequeñas para jugar más de un juego; al finalizar la noche se mostrará al ganador de la apuesta principal, los requisitos para ganar dicha apuesta será haber ganado la mayor cantidad de rondas en cada juego y tener el mayor puntaje. 
 
 ## Equipo
 
