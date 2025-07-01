@@ -1,7 +1,7 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/mi1WNrHU)
-# Proyecto de C++ - Casino "Kyoto Rasecourse"
+# Proyecto de C++ - Casino "Kyoto Rasecourse🎰
 
-## Descripción del Proyecto
+## Descripción del Proyecto💸
 
 Un casino famoso de Japón llamado “Kyoto Rasecourse” el cual constara de 4 juegos principales los cuales serán: Póker, ruleta, bingo y dados; permitiendo realizar diversas apuestas con multijugadores en los juegos mencionados. 
 
