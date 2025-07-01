@@ -15,5 +15,6 @@ struct Player
 void add();
 void Show();
 void open();
+void Welcome();
 
 #endif

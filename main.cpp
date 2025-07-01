@@ -1,6 +1,7 @@
 #include <iostream>
 #include "output\logo/Functions.h"
 #include <windows.h> //Esta libreria permite mostrar en consola los caracteres expandidos dentro del Unicode.
+#include <conio.h>   //Esta libreria permite mostrar en consola los caracteres expandidos dentro del Unicode.
 
 using namespace std;
 
@@ -32,8 +33,13 @@ int main(void)
     {
     case 1:
 
+       
         add();
         Save();
+
+        system("cls");
+        Welcome();
+
         break;
 
     case 2:
