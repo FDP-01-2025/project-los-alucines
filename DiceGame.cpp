@@ -65,4 +65,31 @@ void runTheHouseofDice() {
     printCentered("Press ENTER to begin...");
     cin.ignore();
     cin.get();
-}
+
+    printCentered("Player 1, please enter your name: ");
+    getline(cin, players[0].name);
+    printCentered("Player 2, please enter your name: ");
+    getline(cin, players[1].name);
+
+    for(int i = 0; i < 2; i++) {
+        players[i].money = 500;
+        players[i].wins = 0;
+    }
+    
+    int round = 1;
+    while (players[0].wins < 3 && players[1].wins < 3 && round <= 6) {
+        cout << endl;
+        printCentered("ROUND " + to_string(round));
+        cout << endl;
+
+        int bet[2];
+        for (int i = 0; i < 2; i++) {
+            printCentered(players[i].name + ", you have $" + to_string(players[i].money) + ". Enter your bet: ");
+            cin >> bet[i];
+            if (bet[i] > players[i].money || bet[i] <= 0) {
+                printCentered("Invalid bet! A minimum bet of $1 was assigned.");
+                bet[i] = 1;
+            }
+
+        }
+    }

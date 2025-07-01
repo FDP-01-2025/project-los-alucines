@@ -29,4 +29,4 @@ La noche iniciará con una apuesta principal la cual partirá con un monto fijo,
 
 1. Clona este repositorio en tu máquina local:
    ```bash
-   git clone [https://github.com/FDP-01-2025/project-los-alucines.git]
+   git clone https://github.com/FDP-01-2025/project-los-alucines.git
