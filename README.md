@@ -1,32 +1,36 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/mi1WNrHU)
-# Proyecto de C++ - Casino "Kyoto Rasecourse🎰
+# C++ Project - Casino “Kyoto Rasecourse”.🎰
 
-## Descripción del Proyecto💸
+## Description of the Project💸
 
-Un casino famoso de Japón llamado “Kyoto Rasecourse” el cual constara de 4 juegos principales los cuales serán: Póker, ruleta, bingo y dados; permitiendo realizar diversas apuestas con multijugadores en los juegos mencionados. 
+A famous casino from Japan called “Kyoto Rasecourse” which will consist of 4 main games which will be: Poker, roulette, bingo and craps; allowing to make different bets with multiplayer in the mentioned games.
 
-La noche iniciará con una apuesta principal la cual partirá con un monto fijo, dicho monto podrá desglosarse en apuestas más pequeñas para jugar más de un juego; al finalizar la noche se mostrará al ganador de la apuesta principal, los requisitos para ganar dicha apuesta será haber ganado la mayor cantidad de rondas en cada juego y tener el mayor puntaje. 
+The night will start with a main bet which will start with a fixed amount, this amount can be broken down into smaller bets to play more than one game; at the end of the night the winner of the main bet will be shown, the requirements to win this bet will be to have won the most rounds in each game and to have the highest score.
 
-## Equipo
+## Team
 
-- **Nombre del equipo:** Los alucines.
+- **Team Name:** Los alucines.
 
-### Integrantes del equipo
+### Team members
 
-1. **Nombre completo:** Alonzo Gómez, Astrid Adamaris
-   **Carnet:** 00091525
+1. **Name:** Alonzo Gómez, Astrid Adamaris
+   **ID:** 00091525
 
-2. **Nombre completo:** Barrera Gómez, Heraldo Riquelmy 
-   **Carnet:** 00226325
+2. **Name:** Barrera Gómez, Heraldo Riquelmy 
+   **ID:** 00226325
 
-3. **Nombre completo:** Cornejo Miranda, Steven Eduardo   
-   **Carnet:** 00177125
+3. **Name:** Cornejo Miranda, Steven Eduardo   
+   **ID:** 00177125
 
-4. **Nombre completo:** Escobar Arteaga, Rosario Guadalupe 
-   **Carnet:** 00235325 
+4. **Name:** Escobar Arteaga, Rosario Guadalupe 
+   **ID:** 00235325 
 
-## Instrucciones de Ejecución
+## Execution Instructions
 
-1. Clona este repositorio en tu máquina local:
+1. Clone this repository on your local machine:
    ```bash
    git clone https://github.com/FDP-01-2025/project-los-alucines.git
+
+2. Browse to the cloned repository folder and type this into bash:
+   ```bash
+   code .
