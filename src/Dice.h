@@ -6,6 +6,7 @@
 #include <ctime>
 #include <algorithm>
 #include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -47,12 +48,44 @@ void showDiceHorizontal(int d1, int d2) {
     }
 }
 
+void saveGameResult(const Player& p1, const Player& p2) {
+    ofstream outFile("Dice_Results.txt", ios::app);
+    outFile << "=== THE HOUSE OF DICE ===" << endl;
+    outFile << "Player 1: " << p1.name << " | Wins: " << p1.wins << " | Final Money: $" << p1.money << endl;
+    outFile << "Player 2: " << p2.name << " | Wins: " << p2.wins << " | Final Money: $" << p2.money << endl;
+    if (p1.wins > p2.wins)
+        outFile << "Winner: " << p1.name << endl;
+    else if (p2.wins > p1.wins)
+        outFile << "Winner: " << p2.name << endl;
+    else
+        outFile << "Result: Tie" << endl;
+    outFile << "--------------------------" << endl;
+    outFile.close();
+}
+
+
 void runTheHouseofDice() {
     srand(time(0));
 
     Player players[2];
     cout << endl;
-    centerText("==================== THE HOUSE OF DICE ====================");
+    cout << R"(
+
+  _______ _            _     _                            _         
+ |__   __| |          | |   | |                          | |        
+    | |  | |__   ___  | |__ | | ___  ___  ___ _ ____   __| | ___    
+    | |  | '_ \ / _ \ | '_ \| |/ _ \/ __|/ _ \ '__\ \ / /| |/ _ \   
+    | |  | | | |  __/ | | | | |  __/\__ \  __/ |   \ V / | | (_) |  
+    |_|  |_| |_|\___| |_| |_|_|\___||___/\___|_|    \_/  |_|\___/   
+
+      _    _                                                  
+     | |  | |                                                 
+     | |__| |_   _ _ __   ___  _____      _____  ___ _ __ ___ 
+     |  __  | | | | '_ \ / _ \/ __\ \ /\ / / _ \/ _ \ '__/ __|
+     | |  | | |_| | | | |  __/\__ \\ V  V /  __/  __/ |  \__ \
+     |_|  |_|\__,_|_| |_|\___||___/ \_/\_/ \___|\___|_|  |___/
+
+)" << endl;
     cout << endl;
     centerText("=============== GAME RULES ===============");
     centerText("1. Two players enter their names.");
@@ -121,9 +154,38 @@ void runTheHouseofDice() {
             players[1].money += bet[0];
             players[0].money -= bet[0];
         }
+        else {
+            cout << endl;
+            centerText("It's a tie! No money exchanged");
+        }
 
-}
+        cout << endl;
+        centerText("Current Scores:");
+        centerText(players[0].name + " [" + to_string(players[0].wins) + " wins, $" + to_string(players[0].money) + "]");
+        centerText("VS");
+        centerText(players[1].name + " [" + to_string(players[1].wins) + " wins, $" + to_string(players[1].money) + "]");
 
+        round++;
+        
+        if (players[0].money <= 0 || players[1].money <= 0) {
+            cout << endl;
+            centerText("A player has run out of money! Ending game...");
+            break;
+        }
+    }
+    
+    cout << endl;
+    centerText("==================== FINAL RESULT ====================");
+    if (players[0].wins > players[1].wins)
+        centerText(players[0].name + " wins the game with $" + to_string(players[0].money) + " remaining.");
+    else if (players[1].wins > players[0].wins)
+        centerText(players[1].name + " wins the game with $" + to_string(players[1].money) + " remaining.");
+    else
+        centerText("The game ended in a tie.");
+    centerText("======================================================");
+    centerText("Thank you for playing The House of Dice, enjoy the rest of the games!");
+
+    saveGameResult(players[0], players[1]);
 }
 
 #endif
