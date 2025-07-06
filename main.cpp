@@ -1,44 +1,34 @@
 #include <iostream>
-#include "output\logo/Functions.h"
-#include <windows.h> //Esta libreria permite mostrar en consola los caracteres expandidos dentro del Unicode.
-#include <conio.h>   //Esta libreria permite mostrar en consola los caracteres expandidos dentro del Unicode.
+#include <windows.h> // Permite usar Unicode y funciones de Windows
+
+#include "Player_profiles.h"
+#include "Bingo.h"
+#include "Menu.h"
 
 using namespace std;
 
-// Archivo principal.
-
-int main(void)
+int main()
 {
-
     int option;
 
-    SetConsoleOutputCP(CP_UTF8);
-    // Esto hace que la consola use UTF-8 para mostrar los caracteres utilizados en el diseño del logo.
-    Logo();
-    // Muestra el logo
+    SetConsoleOutputCP(CP_UTF8); // Configura la consola para UTF-8
+    Logo();                      // Muestra el logo
 
-    cout << R"(                                                           1. Play 
-    )" << endl;
+    option = ShowMenu();         // Muestra el menú y guarda la opción
 
-    cout << R"(                                                           2. Exit  
+    system("cls");               // Limpia la consola
 
-
-)"
-         << endl;
-
-    cin >> option;
-
-    system("cls"); // Se utiliza para limpiar la pantalla de la consola y empezar en una nueva.
     switch (option)
     {
     case 1:
-
-       
-        add();
-        Save();
-
-        system("cls");
-        Welcome();
+    //     add();
+    //     Save();
+    //     system("cls");
+    //     Welcome();
+        BingoCards();
+        RandomNumber();
+        MarkNumber();
+        Boards();
 
         break;
 
@@ -51,7 +41,7 @@ int main(void)
         break;
     }
 
-    system("pause"); // Detiene consola antes de salir (solo en Windows)
+    system("pause"); // Espera antes de cerrar la consola
 
     return 0;
 }
