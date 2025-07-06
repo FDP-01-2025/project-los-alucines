@@ -63,3 +63,47 @@ int validateBet(int availableMoney) {
     } while (bet < 1 || bet > availableMoney);
     return bet;
 }
+
+// Main game logic
+void playRoulette(Player &player) {
+    int round = 1;
+    while (player.money > 0 && round <= 6 && player.wins < 3) {
+        cout << "\n=== ROUND " << round << " ===\n";
+        cout << "Current balance: $" << player.money << endl;
+
+        int bet = validateBet(player.money);
+        showMenu();
+
+        int option;
+        cin >> option;
+
+        int betNumber = -1;
+        string betColor;
+        string betEvenOdd;
+
+        switch (option) {
+            case 1:
+                cout << "Bet on number (0-36): ";
+                cin >> betNumber;
+                if (betNumber < 0 || betNumber > 36) {
+                    cout << "Invalid number. You lose this round.\n";
+                    player.money -= bet;
+                    round++;
+                    continue;
+                }
+                break;
+            case 2:
+                cout << "Bet on color (red/black): ";
+                cin >> betColor;
+                break;
+            case 3:
+                cout << "Bet on even or odd: ";
+                cin >> betEvenOdd;
+                break;
+            default:
+                cout << "Invalid option. You lose this round.\n";
+                player.money -= bet;
+                round++;
+                continue;
+        }
+}   }
