@@ -4,6 +4,7 @@
 #include "Player_profiles.h"
 #include "Bingo.h"
 #include "Menu.h"
+#include "Dice.h"
 
 using namespace std;
 
@@ -33,7 +34,7 @@ int main()
         break;
 
     case 2:
-        cout << "Adiós..." << endl;
+        runTheHouseofDice();
         break;
 
     default:
