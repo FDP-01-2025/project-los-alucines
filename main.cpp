@@ -34,7 +34,7 @@ int main()
         break;
 
     case 2:
-        runTheHouseofDice();
+        runTheHouseofDice(); // Ejecuta el juego de los dados
         break;
 
     default:
