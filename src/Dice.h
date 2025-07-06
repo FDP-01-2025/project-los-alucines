@@ -116,7 +116,7 @@ void runTheHouseofDice() {
         }
         else if (sum[1] > sum[0]) {
             cout << endl;
-            centerText(players[1].name + " wins the round!");
+            centerText(players[1].name + " wins the round.!");
             players[1].wins++;
             players[1].money += bet[0];
             players[0].money -= bet[0];
