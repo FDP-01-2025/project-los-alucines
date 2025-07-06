@@ -107,3 +107,37 @@ void playRoulette(Player &player) {
                 continue;
         }
 }   }
+
+int result = rand() % 37;
+        string resultColor = getColor(result);
+
+        cout << "Roulette spun... Number: " << result << " - Color: " << resultColor << endl;
+
+        bool won = false;
+
+        if (option == 1 && result == betNumber) {
+            player.money += bet * 35;
+            player.wins++;
+            won = true;
+        } else if (option == 2 && resultColor == betColor) {
+            player.money += bet;
+            player.wins++;
+            won = true;
+        } else if (option == 3) {
+            if ((betEvenOdd == "even" && result % 2 == 0 && result != 0) ||
+                (betEvenOdd == "odd" && result % 2 != 0)) {
+                player.money += bet;
+                player.wins++;
+                won = true;
+            }
+        }
+
+        if (!won) {
+            player.money -= bet;
+            cout << "Result: You lost this round.\n";
+        } else {
+            cout << "🎉 You won this round!\n";
+        }
+
+        round++;
+    
