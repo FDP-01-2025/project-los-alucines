@@ -27,7 +27,10 @@ void playRoulette(Player &player);
 #include <cstdlib>
 #include <ctime>
 #include <string>
+#include <windows.h>
 #include "roulette.h"
+
+#include "src/Player_profiles.h"
 
 using namespace std;
 
