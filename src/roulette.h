@@ -155,7 +155,7 @@ void playRoulette(Player &player) {
     if (player.wins >= 3)
         cout << "You won with 3 correct bets!\n";
     else if (player.money <= 0)
-        cout << "You ran out of money. 😢\n";
+        cout << "You ran out of money. \n";
     else
         cout << "Game ended after 6 rounds.\n";
 
