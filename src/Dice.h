@@ -7,8 +7,9 @@
 #include <algorithm>
 #include <string>
 #include <fstream>
+#include <windows.h>
 
-#include "Bingo.h"     
+#include "src/Player_profiles.h"     
 extern Player data[2]; 
 
 using namespace std;
@@ -55,6 +56,8 @@ void runTheHouseofDice()
 {
     srand(time(0));
     int wins[2] = {0, 0}; 
+    add();  
+    Save();
 
     cout << endl;
     cout << R"(
@@ -95,8 +98,8 @@ void runTheHouseofDice()
     cin.get();
 
     int round = 1;
-    while (wins[0] < 3 && wins[1] < 3 && round <= 6)
-    {
+    while (wins[0] < 3 && wins[1] < 3 && round <= 6) {
+        system("cls");
         cout << endl;
         centerText("ROUND " + to_string(round));
         cout << endl;
@@ -152,7 +155,10 @@ void runTheHouseofDice()
         centerText(data[0].name + " [" + to_string(wins[0]) + " wins, $" + to_string(data[0].balance) + "]");
         centerText("VS");
         centerText(data[1].name + " [" + to_string(wins[1]) + " wins, $" + to_string(data[1].balance) + "]");
-
+        
+        centerText("Press any key to continue to the next round...");
+        system("pause >nul");
+        
         round++;
 
         if (data[0].balance <= 0 || data[1].balance <= 0)
@@ -174,11 +180,26 @@ void runTheHouseofDice()
     centerText("======================================================");
     centerText("Thank you for playing The House of Dice!");
 
+<<<<<<< HEAD
     
 
 
 
 
+=======
+    ofstream file("Dice_scores.txt", ios::app); 
+    file << "=== THE HOUSE OF DICE ===\n";
+    file << "Player 1: " << data[0].name << " - Wins: " << wins[0] << " - Balance: $" << data[0].balance << endl;
+    file << "Player 2: " << data[1].name << " - Wins: " << wins[1] << " - Balance: $" << data[1].balance << endl;
+    if (wins[0] > wins[1])
+        file << "Winner: " << data[0].name << "\n";
+    else if (wins[1] > wins[0])
+        file << "Winner: " << data[1].name << "\n";
+    else
+        file << "Result: Tie\n";
+    file << "-----------------------------------------\n";
+    file.close();
+>>>>>>> 35614d0 (Update)
 }
 
 #endif
