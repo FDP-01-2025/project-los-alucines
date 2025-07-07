@@ -23,14 +23,11 @@ void playRoulette(Player &player);
 
 
 
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
-#include <string>
-#include <windows.h>
+#include "Player_profiles.h"
+#include "Bingo.h"
+#include "Menu.h"
+#include "Dice.h"
 #include "roulette.h"
-
-#include "src/Player_profiles.h"
 
 using namespace std;
 
