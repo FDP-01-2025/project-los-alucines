@@ -3,7 +3,7 @@
 
 ## Description of the Project💸
 
-A famous casino from Japan called “Kyoto Rasecourse” which will consist of 4 main games which will be: Poker, roulette, bingo and craps; allowing to make different bets with multiplayer in the mentioned games.
+A famous casino from Japan called “Kyoto Rasecourse” which will consist of 4 main games which will be: Poker, roulette, bingo and dice; allowing to make different bets with multiplayer in the mentioned games.
 
 The night will start with a main bet which will start with a fixed amount, this amount can be broken down into smaller bets to play more than one game; at the end of the night the winner of the main bet will be shown, the requirements to win this bet will be to have won the most rounds in each game and to have the highest score.
 
@@ -34,3 +34,7 @@ The night will start with a main bet which will start with a fixed amount, this 
 2. Browse to the cloned repository folder and type this into bash:
    ```bash
    code .
+
+3. Once inside Visual Studio Code open a new terminal (Ctrl + shift + ñ) and type the following to compile the game:
+   ```bash
+   g++ main.cpp/ -o 
