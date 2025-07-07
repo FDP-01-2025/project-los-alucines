@@ -1,8 +1,11 @@
-// roulette.h
 #ifndef ROULETTE_H
 #define ROULETTE_H
 
+#include <iostream>
 #include <string>
+#include <cstdlib>
+#include <ctime>
+
 using namespace std;
 
 // Struct to store player information
@@ -11,25 +14,6 @@ struct Player {
     int money;
     int wins;
 };
-
-// Function declarations
-void showMenu();
-string getColor(int number);
-int validateBet(int availableMoney);
-void playRoulette(Player &player);
-
-#endif
-
-
-
-
-#include "Player_profiles.h"
-#include "Bingo.h"
-#include "Menu.h"
-#include "Dice.h"
-#include "roulette.h"
-
-using namespace std;
 
 // Show betting menu
 void showMenu() {
@@ -131,7 +115,7 @@ void playRoulette(Player &player) {
             player.money -= bet;
             cout << "Result: You lost this round.\n";
         } else {
-            cout << " You won this round!\n";
+            cout << "You won this round!\n";
         }
 
         round++;
@@ -146,23 +130,24 @@ void playRoulette(Player &player) {
     if (player.wins >= 3)
         cout << "You won with 3 correct bets!\n";
     else if (player.money <= 0)
-        cout << "You ran out of money. \n";
+        cout << "You ran out of money.\n";
     else
         cout << "Game ended after 6 rounds.\n";
 }
 
-// Entry point
-int main() {
+// Entry point (main function)
+void startRouletteGame() {
     srand(time(0));
     Player player;
-    player.wins = 0;
     player.money = 100;
+    player.wins = 0;
 
-    cout << " WELCOME TO ROULETTE \n";
+    cout << "WELCOME TO ROULETTE\n";
     cout << "Enter your name: ";
-    cin.ignore(); // Important to flush the input buffer
+    cin.ignore();
     getline(cin, player.name);
 
     playRoulette(player);
-    return 0;
 }
+
+#endif // ROULETTE_H

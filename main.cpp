@@ -5,7 +5,7 @@
 #include "src/Bingo.h"
 #include "src/Menu.h"
 #include "src/Dice.h"
-
+#include "src/roulette.h"
 
 using namespace std;
 
