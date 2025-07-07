@@ -180,13 +180,6 @@ void runTheHouseofDice()
     centerText("======================================================");
     centerText("Thank you for playing The House of Dice!");
 
-<<<<<<< HEAD
-    
-
-
-
-
-=======
     ofstream file("Dice_scores.txt", ios::app); 
     file << "=== THE HOUSE OF DICE ===\n";
     file << "Player 1: " << data[0].name << " - Wins: " << wins[0] << " - Balance: $" << data[0].balance << endl;
@@ -199,7 +192,5 @@ void runTheHouseofDice()
         file << "Result: Tie\n";
     file << "-----------------------------------------\n";
     file.close();
->>>>>>> 35614d0 (Update)
-}
 
 #endif
