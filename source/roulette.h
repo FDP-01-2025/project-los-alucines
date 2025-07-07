@@ -76,7 +76,7 @@ void playRoulette(Player &player) {
         cout << "Current balance: $" << player.money << endl;
 
         int bet = validateBet(player.money);
-        showMenu();
+        showmenu();
 
         int option;
         cin >> option;
