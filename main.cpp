@@ -5,6 +5,8 @@
 #include "src/Bingo.h"
 #include "src/Menu.h"
 #include "src/Dice.h"
+#include "src/Poker.h"
+#include "src/Roulette.h"
 
 
 using namespace std;
