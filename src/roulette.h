@@ -131,7 +131,7 @@ void playRoulette(Player &player) {
             player.money -= bet;
             cout << "Result: You lost this round.\n";
         } else {
-            cout << "🎉 You won this round!\n";
+            cout << " You won this round!\n";
         }
 
         round++;
@@ -158,7 +158,7 @@ int main() {
     player.wins = 0;
     player.money = 100;
 
-    cout << "🎰 WELCOME TO ROULETTE 🎰\n";
+    cout << " WELCOME TO ROULETTE \n";
     cout << "Enter your name: ";
     cin.ignore(); // Important to flush the input buffer
     getline(cin, player.name);
