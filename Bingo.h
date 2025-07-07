@@ -1,4 +1,3 @@
-
 #ifndef BINGO_H
 #define BINGO_H
 
@@ -7,9 +6,9 @@
 #include <fstream>
 #include <windows.h>
 #include <string>
-#include <cstdlib> // para rand() y srand()
-#include <ctime>   // para time()
-#include <random>  // para generador moderno (más recomendado)
+#include <cstdlib> // for rand() and srand()
+#include <ctime>   // for time()
+#include <random>  // for modern generator (recommended)
 
 using namespace std;
 const int rows = 5;
@@ -25,21 +24,19 @@ struct Player
     float bet;
 };
 
+extern Player data[2];
+
 void RunningBingo()
 {
-    Player data[2];
     ifstream file("Player_profiles.txt");
-    char a = '|';
 
     if (!file.is_open())
     {
-        cout << "ERROR: No se pudo abrir el archivo." << endl;
+        cout << "ERROR: Could not open the file." << endl;
         return;
     }
 
     string line;
-    getline(file, line); // Salta la primera línea
-
     int i = 0;
     while (getline(file, line) && i < 2)
     {
@@ -57,190 +54,302 @@ void RunningBingo()
     }
     file.close();
 
-    Sleep(9000);
     system("cls");
-
-    cout << R"(                 
-                                             ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-                                             ▓▓                                      ▓▓
-                                             ▓▓   ▓▓      ▓▓   ▓▓      ▓▓    ▓▓▓▓    ▓▓
-                                             ▓▓     ▓▓    ▓▓   ▓▓      ▓▓       ▓▓   ▓▓
-                                             ▓▓   ▓▓▓▓   ▓▓   ▓▓▓▓▓▓  ▓▓   ▓▓▓▓▓▓    ▓▓
-                                             ▓▓                                      ▓▓
-                                             ▓▓          W E L C O M E   T O         ▓▓
-                                             ▓▓               B I N G O              ▓▓
-                                             ▓▓                                      ▓▓
-                                             ▓▓  ▓▓▓▓▓   ▓▓▓▓   ▓▓  ▓▓   ▓▓▓▓▓▓▓▓▓▓  ▓▓
-                                             ▓▓    ▓▓     ▓▓   ▓▓▓▓▓▓     ▓▓         ▓▓
-                                             ▓▓  ▓▓▓▓    ▓▓   ▓▓  ▓▓     ▓▓▓▓▓▓      ▓▓
-                                             ▓▓                                      ▓▓
-                                             ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-
-)" << endl;
 
     for (int k = 0; k < i; k++)
     {
         bool valid = false;
-
         while (!valid)
         {
+            cout << R"(
+                                                     ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                                                     ▓▓                                      ▓▓
+                                                     ▓▓   ▓▓      ▓▓   ▓▓      ▓▓    ▓▓▓▓    ▓▓
+                                                     ▓▓     ▓▓    ▓▓   ▓▓      ▓▓       ▓▓   ▓▓
+                                                     ▓▓   ▓▓▓▓   ▓▓   ▓▓▓▓▓▓  ▓▓   ▓▓▓▓▓▓    ▓▓
+                                                     ▓▓                                      ▓▓
+                                                     ▓▓          W E L C O M E   T O         ▓▓
+                                                     ▓▓               B I N G O              ▓▓
+                                                     ▓▓                                      ▓▓
+                                                     ▓▓  ▓▓▓▓▓   ▓▓▓▓   ▓▓  ▓▓   ▓▓▓▓▓▓▓▓▓▓  ▓▓
+                                                     ▓▓    ▓▓     ▓▓   ▓▓▓▓▓▓     ▓▓         ▓▓
+                                                     ▓▓  ▓▓▓▓    ▓▓   ▓▓  ▓▓     ▓▓▓▓▓▓      ▓▓
+                                                     ▓▓                                      ▓▓
+                                                     ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+            )" << endl;
+
             cout << endl;
-            cout << "\t\t\t\t\t\t══════════════════════════════" << endl;
-            cout << "\t\t\t\t\t\t" << " Welcome: " << data[k].name << endl;
-            cout << "\t\t\t\t\t\t  ¿Cuánto deseas apostar? " << endl;
-            cout << "\t\t\t\t\t\t  $";
+            cout << "\t\t\t\t\t\t\t   ══════════════════════════════" << endl;
+            cout << "\t\t\t\t\t\t\t\t" << "Welcome: " << data[k].name << endl;
+            cout << "\t\t\t\t\t\t\t\tHow much do you want to bet? " << endl;
+            cout << "\t\t\t\t\t\t\t\t$";
             cin >> data[k].bet;
 
-            cout << "\t\t\t\t\t\t Guardando información..." << endl;
+            cout << "\t\t\t\t\t\t\t\tSaving info..." << endl;
             Sleep(2000);
-            cout << "\t\t\t\t\t\t══════════════════════════════" << endl;
+            cout << "\t\t\t\t\t\t\t    ══════════════════════════════" << endl;
 
             if (data[k].bet < 75)
             {
-                cout << "\n\t\t\t\t\t\tDebes apostar al menos $75.\n";
+                cout << "\n\t\t\t\t\t\t\tYou must bet at least $75.\n";
+                Sleep(2000);
+                system("cls");
             }
             else if (data[k].bet > data[k].balance)
             {
-                cout << "\n\t\t\t\t\t\tNo tienes suficiente saldo para apostar esa cantidad.\n";
+                cout << "\n\t\t\t\t\t\tYou don’t have enough balance for that bet.\n";
+                Sleep(2000);
+                system("cls");
             }
             else
             {
                 valid = true;
-                cout << "\t\t\t\t\t\tApuesta registrada con éxito.\n";
+                cout << "\t\t\t\t\t\t\tBet registered successfully.\n";
+                system("cls");
 
                 ofstream outFile("Bets.txt", ios::app);
-                outFile << "Jugador: " << data[k].name << ", Edad: " << data[k].age << ", Apuesta: $" << data[k].bet << endl;
+                outFile << "Game" << endl;
+                outFile << "Player: " << data[k].name << ", Age: " << data[k].age << ", Bet: $" << data[k].bet << endl;
                 outFile.close();
             }
         }
     }
 
     system("cls");
-
-    for (int j = 0; j < i; j++)
-    {
-        cout << "╔═══════════════════════════════╗" << endl;
-        cout << a << "\tPlayer: " << j + 1 << "\t\t" << a << "\n";
-        cout << a << "\tName: " << data[j].name << "\t\t" << a << endl;
-        cout << a << "\t$ Bet: " << data[j].bet << "\t\t" << a << endl;
-        cout << "╚═══════════════════════════════╝" << endl;
-        cout << endl;
-    }
 }
 
 void BingoCards()
 {
+    srand(time(0));
 
-    srand(time(0)); // Inicializar aleatorio
-
-    // Llenar ambas tarjetas
     for (int i = 0; i < rows; i++)
     {
+        cout << "\t\t\t";
         for (int j = 0; j < cols; j++)
         {
             board1[i][j] = rand() % 99 + 1;
             board2[i][j] = rand() % 99 + 1;
         }
     }
-
-    cout << "\n\t\tPLAYER 1\t\t\t\t\t\t\tPLAYER 2\n";
-    cout << endl;
-    cout << "  ------------------------------------\t\t\t\t--------------------------------------\n";
-    cout << endl;
-
-    for (int i = 0; i < rows; i++)
-    {
-        // Tarjeta 1
-        for (int j = 0; j < cols; j++)
-        {
-            if (board1[i][j] < 10)
-                cout << " [ 0" << board1[i][j] << " ] ";
-            else
-                cout << " [ " << board1[i][j] << " ] ";
-        }
-
-        cout << "\t\t\t"; // espacio entre las dos tarjetas
-
-        // Tarjeta 2
-        for (int j = 0; j < cols; j++)
-        {
-            if (board2[i][j] < 10)
-                cout << " [ 0" << board2[i][j] << " ] ";
-            else
-                cout << " [ " << board2[i][j] << " ] ";
-        }
-
-        cout << endl
-             << endl; // salto de línea entre filas
-    }
-    cout << "  ------------------------------------\t\t\t\t--------------------------------------\n";
-
-    cout << "\n\n\n\n";
 }
+
+bool numbers[100] = {false};
 
 void RandomNumber()
 {
-    int number;
-    number = rand() % 99 + 1;
-    cout << "\nRandom Number: " << number << endl;
-}
+    cout << R"(
 
-void MarkNumber()
-{
+
+▓                ▓
+▓   B I N G O    ▓
+▓                ▓  )"
+         << endl;
 
     int number;
-    // Reemplaza el número con un marcador especial (-1) cuando sea encontrado en cualquiera de las cartas
+    do
+    {
+        number = rand() % 99 + 1;
+    } while (numbers[number]);
+
+    numbers[number] = true;
+
+    cout << "\t\t\t\t\t\t\t       RANDOM NUMBER: " << number << "\n"
+         << endl;
+
     for (int i = 0; i < rows; i++)
     {
         for (int j = 0; j < cols; j++)
         {
             if (board1[i][j] == number)
-                board1[i][j] = 'x'; // Marcamos con -1 (podrías usar otro marcador como "X")
-
+                board1[i][j] = -2;
             if (board2[i][j] == number)
-                board2[i][j] = 'x'; // Marcamos con -1 (podrías usar otro marcador como "X")
+                board2[i][j] = -2;
         }
     }
 }
 
 void Boards()
 {
-    cout << "\n\t\tPLAYER 1\t\t\t\t\t\t\tPLAYER 2\n";
-    cout << endl;
-    cout << "  ------------------------------------\t\t\t\t--------------------------------------\n";
-    cout << endl;
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    cout << "\n\t\t\t\t\tPLAYER 1\t\t\t\t\t\t\tPLAYER 2\n\n";
+    cout << " \t\t\t══════════════════════════════════════\t\t\t\t ══════════════════════════════════════\n";
+    for (int i = 0; i < rows; i++)
+    {
+        cout << "\t\t\t";
+        // Player 1
+        for (int j = 0; j < cols; j++)
+        {
+            if (board1[i][j] == -2)
+            {
+                SetConsoleTextAttribute(hConsole, 3);
+                cout << " [ XX ] "; // mark number as XX
+            }
+            else if (board1[i][j] < 10)
+            {
+                SetConsoleTextAttribute(hConsole, 5);
+
+                cout << " [ 0" << board1[i][j] << " ] ";
+            }
+            else
+            {
+                SetConsoleTextAttribute(hConsole, 5);
+
+                cout << " [ " << board1[i][j] << " ] ";
+            }
+        }
+
+        cout << "\t\t\t";
+
+        // Player 2
+        for (int j = 0; j < cols; j++)
+        {
+            if (board2[i][j] == -2)
+            {
+                SetConsoleTextAttribute(hConsole, 3);
+                cout << " [ XX ] "; // mark number as XX
+            }
+            else if (board2[i][j] < 10)
+            {
+                SetConsoleTextAttribute(hConsole, 5);
+                cout << " [ 0" << board2[i][j] << " ] ";
+            }
+            else
+            {
+                SetConsoleTextAttribute(hConsole, 5);
+                cout << " [ " << board2[i][j] << " ] ";
+            }
+        }
+
+        cout << "\n\n";
+    }
+
+    cout << " \t\t\t══════════════════════════════════════\t\t\t\t ══════════════════════════════════════\n";
+
+    int score1 = 0, score2 = 0;
 
     for (int i = 0; i < rows; i++)
     {
-
         for (int j = 0; j < cols; j++)
         {
-            if (board1[i][j] == 'x')
-                cout << " [ XX ] "; // Marcado con "X"
-            else if (board1[i][j] < 10)
-                cout << " [ 0" << board1[i][j] << " ] "; // Espaciado si el número es de un solo dígito
-            else
-                cout << " [ " << board1[i][j] << " ] "; // Para números de dos dígitos
+            if (board1[i][j] == -2)
+            {
+                score1++;
+            }
+
+            if (board2[i][j] == -2)
+            {
+                score2++;
+            }
         }
-
-        cout << "\t\t\t"; // espacio entre las dos tarjetas
-
-        // Tarjeta 2
-        for (int j = 0; j < cols; j++)
-        {
-            if (board2[i][j] == 'x')
-                cout << " [ XX ] "; // Marcado con "X"
-            else if (board2[i][j] < 10)
-                cout << " [ 0" << board2[i][j] << " ] "; // Espaciado si el número es de un solo dígito
-            else
-                cout << " [ " << board2[i][j] << " ] "; // Para números de dos dígitos
-        }
-
-        cout << endl
-             << endl; // salto de línea entre filas
     }
 
-    cout << "  ------------------------------------\t\t\t\t--------------------------------------\n";
+    SetConsoleTextAttribute(hConsole, 5);
+
+    cout << "\n";
+    cout << "            \t     ╔══════════════════════════╦═══════════════════════╗\n";
+    cout << "            \t     ║ " << data[0].name << "\t\t\t\t" << data[1].name << "\t\t" << endl;
+    cout << "            \t     ║ " << "  \t                                        ║" << endl;
+    cout << "            \t     ╠══════════════════════════╬═══════════════════════╣\n";
+    cout << "            \t     ║        ";
+
+    if (score1 < 10)
+        cout << score1 << "           ";
+    else if (score1 < 100)
+        cout << score1 << "          ";
+    else
+        cout << score1 << "         ";
+
+    cout << "      ║        ";
+
+    if (score2 < 10)
+        cout << score2 << "           ";
+    else if (score2 < 100)
+        cout << score2 << "          ";
+    else
+        cout << score2 << "         ";
+
+    cout << "   ║\n";
+    cout << "            \t     ╚══════════════════════════╩═══════════════════════╝\n";
+    cout << endl;
+
+    bool Win = false;
+    int plus = 0;
+
+    if (score1 != 25 && score2 != 25)
+    {
+        cout << "Waiting for a winner..." << endl;
+        cout << endl;
+    }
+    if (score1 == 25)
+    {
+        SetConsoleTextAttribute(hConsole, 3);
+
+        plus = data[0].bet + data[1].bet;
+
+        Win = true;
+
+        cout << "================ GAME RESULT ================" << endl;
+        cout << endl;
+        cout << data[0].name << " has won and taken : $ " << plus << " prize pool. Congratulations!" << endl;
+        cout << endl;
+        cout << data[1].name << " has lost his $" << data[1].bet << " bet. Better luck next time." << endl;
+        cout << "=============================================" << endl;
+        data[1].balance = data[1].balance - data[1].bet;
+
+        ofstream outFile("Bets.txt", ios::app); // open file in append mode
+        outFile << "================ GAME RESULT ================\n";
+        outFile << data[0].name << " WON and earned $" << plus << ".\n";
+        outFile << data[1].name << " LOST and lost $" << data[1].bet << ".\n";
+        outFile << "=============================================\n\n";
+        outFile.close();
+    }
+    else if (score2 == 25)
+    {
+        SetConsoleTextAttribute(hConsole, 3);
+        cout << endl;
+        cout << "================ GAME RESULT ================" << endl;
+        cout << endl;
+        plus = data[1].bet + data[0].bet;
+
+        Win = true;
+        cout << data[1].name << " has won and taken : $ " << plus << " prize pool. Congratulations!" << endl;
+        cout << endl;
+
+        cout << data[0].name << " has lost his $" << data[0].bet << " bet. Better luck next time." << endl;
+        cout << "=============================================" << endl;
+        data[0].balance = data[0].balance - data[0].bet;
+
+        ofstream outFile("Bets.txt", ios::app); // append to file
+        outFile << "================ GAME RESULT ================\n";
+        outFile << data[1].name << " WON and earned $" << plus << ".\n";
+        outFile << data[0].name << " LOST and lost $" << data[0].bet << ".\n";
+        outFile << "=============================================\n\n";
+        outFile.close();
+    }
+}
+
+bool CardComplete(int board[rows][cols])
+{
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < cols; j++)
+            if (board[i][j] != -2)
+                return false;
+
+    return true;
+}
+
+void Play()
+{
+    do
+    {
+        system("pause");
+        system("cls");
+
+        RandomNumber();
+        Boards();
+
+    } while (!CardComplete(board1) && !CardComplete(board2));
 }
 
 #endif
