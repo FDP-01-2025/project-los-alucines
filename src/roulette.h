@@ -1,3 +1,6 @@
+// roulette.h
+// Header file for Roulette game - Final Project
+
 #ifndef ROULETTE_H
 #define ROULETTE_H
 
@@ -19,11 +22,15 @@ void playRoulette(Player &player);
 
 #endif
 
-include <iostream>
+
+
+
+#include <iostream>
 #include <cstdlib>
 #include <ctime>
 #include <string>
 #include <iomanip>
+#include "roulette.h"
 
 using namespace std;
 
@@ -34,7 +41,6 @@ struct Player {
     int wins;
 };
 
-
 // Show betting menu
 void showMenu() {
     cout << "\n--- BETTING OPTIONS ---\n";
@@ -43,7 +49,6 @@ void showMenu() {
     cout << "3. Even or odd\n";
     cout << "Choose an option: ";
 }
-
 
 // Get the color of the number
 string getColor(int number) {
@@ -61,7 +66,7 @@ int validateBet(int availableMoney) {
             cout << "Invalid bet. Please try again.\n";
         }
     } while (bet < 1 || bet > availableMoney);
-    return bet;
+    return bet;
 }
 
 // Main game logic
@@ -72,7 +77,7 @@ void playRoulette(Player &player) {
         cout << "Current balance: $" << player.money << endl;
 
         int bet = validateBet(player.money);
-        showMenu();
+        showmenu();
 
         int option;
         cin >> option;
@@ -105,10 +110,9 @@ void playRoulette(Player &player) {
                 player.money -= bet;
                 round++;
                 continue;
-        }
-}   }
+   }   }   }   
 
-int result = rand() % 37;
+     int result = rand() % 37;
         string resultColor = getColor(result);
 
         cout << "Roulette spun... Number: " << result << " - Color: " << resultColor << endl;
@@ -139,5 +143,34 @@ int result = rand() % 37;
             cout << "🎉 You won this round!\n";
         }
 
-        round++;
-    
+        round++;
+    
+
+    // Final result
+    cout << "\n===== FINAL RESULTS =====\n";
+    cout << "Player: " << player.name << endl;
+    cout << "Wins: " << player.wins << endl;
+    cout << "Final balance: $" << player.money << endl;
+
+    if (player.wins >= 3)
+        cout << "You won with 3 correct bets!\n";
+    else if (player.money <= 0)
+        cout << "You ran out of money. 😢\n";
+    else
+        cout << "Game ended after 6 rounds.\n";
+
+
+int main() {
+    srand(time(0));
+    Player player;
+    player.wins = 0;
+    player.money = 100;
+
+    cout << "🎰 WELCOME TO ROULETTE 🎰\n";
+    cout << "Enter your name: ";
+    cin.ignore();
+    getline(cin, player.name);
+
+    playRoulette(player);
+    return 0;
+}
