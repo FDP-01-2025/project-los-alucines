@@ -95,7 +95,7 @@ void add()
 
 void Save()
 {
-    ofstream file("Player_profiles.txt"); // Open or create file
+    ofstream file("src/Player_profiles.txt"); // Open or create file
 
     for (int i = 0; i < total; i++)
     {

@@ -28,7 +28,7 @@ extern Player data[2];
 
 void RunningBingo()
 {
-    ifstream file("Player_profiles.txt");
+    ifstream file("src/Player_profiles.txt");
 
     if (!file.is_open())
     {
@@ -289,7 +289,7 @@ void Boards()
 
         Win = true;
 
-        cout << "================ GAME RESULT ================" << endl;
+        cout << "================ BINGO RESULT ================" << endl;
         cout << endl;
         cout << data[0].name << " has won and taken : $ " << plus << " prize pool. Congratulations!" << endl;
         cout << endl;
@@ -298,7 +298,8 @@ void Boards()
         data[1].balance = data[1].balance - data[1].bet;
 
         ofstream outFile("Bets.txt", ios::app); // open file in append mode
-        outFile << "================ GAME RESULT ================\n";
+        outFile << endl;
+        outFile << "================ BINGO RESULT ================\n";
         outFile << data[0].name << " WON and earned $" << plus << ".\n";
         outFile << data[1].name << " LOST and lost $" << data[1].bet << ".\n";
         outFile << "=============================================\n\n";
@@ -308,7 +309,7 @@ void Boards()
     {
         SetConsoleTextAttribute(hConsole, 3);
         cout << endl;
-        cout << "================ GAME RESULT ================" << endl;
+        cout << "================ BINGO RESULT ================" << endl;
         cout << endl;
         plus = data[1].bet + data[0].bet;
 
@@ -321,7 +322,8 @@ void Boards()
         data[0].balance = data[0].balance - data[0].bet;
 
         ofstream outFile("Bets.txt", ios::app); // append to file
-        outFile << "================ GAME RESULT ================\n";
+        outFile << endl;
+        outFile << "================ BINGO RESULT ================\n";
         outFile << data[1].name << " WON and earned $" << plus << ".\n";
         outFile << data[0].name << " LOST and lost $" << data[0].bet << ".\n";
         outFile << "=============================================\n\n";
