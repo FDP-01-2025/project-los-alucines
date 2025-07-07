@@ -192,5 +192,6 @@ void runTheHouseofDice()
         file << "Result: Tie\n";
     file << "-----------------------------------------\n";
     file.close();
-
+    
+}
 #endif
