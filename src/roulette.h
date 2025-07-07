@@ -1,6 +1,4 @@
 // roulette.h
-// Header file for Roulette game - Final Project
-
 #ifndef ROULETTE_H
 #define ROULETTE_H
 
@@ -29,17 +27,9 @@ void playRoulette(Player &player);
 #include <cstdlib>
 #include <ctime>
 #include <string>
-#include <iomanip>
 #include "roulette.h"
 
 using namespace std;
-
-// Player structure
-struct Player {
-    string name;
-    int money;
-    int wins;
-};
 
 // Show betting menu
 void showMenu() {
@@ -72,12 +62,13 @@ int validateBet(int availableMoney) {
 // Main game logic
 void playRoulette(Player &player) {
     int round = 1;
+
     while (player.money > 0 && round <= 6 && player.wins < 3) {
         cout << "\n=== ROUND " << round << " ===\n";
         cout << "Current balance: $" << player.money << endl;
 
         int bet = validateBet(player.money);
-        showmenu();
+        showMenu();
 
         int option;
         cin >> option;
@@ -110,9 +101,9 @@ void playRoulette(Player &player) {
                 player.money -= bet;
                 round++;
                 continue;
-   }   }   }   
+        }
 
-     int result = rand() % 37;
+        int result = rand() % 37;
         string resultColor = getColor(result);
 
         cout << "Roulette spun... Number: " << result << " - Color: " << resultColor << endl;
@@ -144,7 +135,7 @@ void playRoulette(Player &player) {
         }
 
         round++;
-    
+    }
 
     // Final result
     cout << "\n===== FINAL RESULTS =====\n";
@@ -158,8 +149,9 @@ void playRoulette(Player &player) {
         cout << "You ran out of money. \n";
     else
         cout << "Game ended after 6 rounds.\n";
+}
 
-
+// Entry point
 int main() {
     srand(time(0));
     Player player;
@@ -168,7 +160,7 @@ int main() {
 
     cout << "🎰 WELCOME TO ROULETTE 🎰\n";
     cout << "Enter your name: ";
-    cin.ignore();
+    cin.ignore(); // Important to flush the input buffer
     getline(cin, player.name);
 
     playRoulette(player);
