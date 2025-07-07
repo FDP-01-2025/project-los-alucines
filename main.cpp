@@ -59,4 +59,8 @@ int main()
 
     system("pause"); // Pause before closing the console
     return 0;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 3950b5ec09f4b4e83dd7edf8bcba195c25acff6f
