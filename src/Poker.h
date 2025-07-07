@@ -154,5 +154,41 @@ void repartirCartas()
     }
 }
 
+//Funcion para cambiar un maximo de 2 cartas por jugador
+void cambiarCartas(Carta mano[], const string& nombreJugador)
+{
+    for (int intento = 0; intento < 2; intento++) // Dos oportunidades de cambiar carta
+    {
+        imprimirManoHorizontal(mano, 5);
+        cout << nombreJugador << ", ¿quieres cambiar una carta? (s/n): ";
+        char respuesta;
+        cin >> respuesta;
+
+        if (respuesta == 's' || respuesta == 'S')
+        {
+            int indice;
+            do {
+                cout << "¿Cuál carta quieres cambiar? (1-5): ";
+                cin >> indice;
+            } while (indice < 1 || indice > 5);
+
+            // Buscar una carta nueva no usada en el mazo
+            int nuevaCartaIndex;
+            do {
+                nuevaCartaIndex = rand() % 52;
+            } while (cartaUsada[nuevaCartaIndex]);
+
+            // Reemplazar la carta en la mano
+            mano[indice - 1] = mazo[nuevaCartaIndex];
+            cartaUsada[nuevaCartaIndex] = true;
+
+            cout << "Carta cambiada exitosamente.\n\n";
+        }
+        else
+        {
+            cout << "No se cambió ninguna carta en este intento.\n\n";
+        }
+    }
+}
 
 #endif
