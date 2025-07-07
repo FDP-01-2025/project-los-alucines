@@ -75,9 +75,10 @@ void add()
                 valid = false;
                 exit(0);
             }
-            else if (data[i].balance < 10)
+            else if (data[i].balance < 500)
             {
                 cout << "\n \t You do not have enough money to bet." << endl;
+                cout << "\n \t You must to bet more than $500." << endl;
                 cout << "\n\t Please restart the game." << endl;
                 exit(0);
             }
