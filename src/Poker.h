@@ -61,6 +61,44 @@ void imprimirCartaLinea(const Carta &carta, int linea)
     }
 }
 
+//array donde se guarda el mazo de 52 cartas que se exportan desde el archivo .txt
+Carta mazo[52];
+string formatearCarta(const Carta &carta);
+
+void LeerArchivos()
+{
+    ifstream cartas("Cartas.txt");
+    if (cartas.is_open())
+    {
+        for (int i = 0; i < 52; i++)
+        {
+            cartas >> mazo[i].numero >> mazo[i].palo >> mazo[i].color;
+        }
+    }
+    cartas.close();
+
+    for (int i = 0; i < 52; i++)
+    {
+        cout << mazo[i].numero << " - " << mazo[i].palo << " - "<< mazo[i].color << endl;
+    }
+}
+
+// Función que imprime las cartas horizontalmente
+void imprimirManoHorizontal(const Carta mano[], int numCartas)
+{
+    const int NUM_LIN = 7; // Cada carta tiene 7 líneas
+
+    for (int linea = 0; linea < NUM_LIN; ++linea)
+    {
+        for (int i = 0; i < numCartas; ++i)
+        {
+            imprimirCartaLinea(mano[i], linea);
+            cout << "  "; // Espacio entre cartas
+        }
+        cout << endl;
+    }
+}
+
 
 
 
