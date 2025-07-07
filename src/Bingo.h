@@ -28,7 +28,7 @@ extern Player data[2];
 
 void RunningBingo()
 {
-    ifstream file("Player_profiles.txt");
+    ifstream file("src/Player_profiles.txt");
 
     if (!file.is_open())
     {
@@ -106,11 +106,6 @@ void RunningBingo()
                 valid = true;
                 cout << "\t\t\t\t\t\t\tBet registered successfully.\n";
                 system("cls");
-
-                ofstream outFile("Bets.txt", ios::app);
-                outFile << "Game" << endl;
-                outFile << "Player: " << data[k].name << ", Age: " << data[k].age << ", Bet: $" << data[k].bet << endl;
-                outFile.close();
             }
         }
     }
@@ -289,7 +284,7 @@ void Boards()
 
         Win = true;
 
-        cout << "================ GAME RESULT ================" << endl;
+        cout << "================ BINGO RESULT ================" << endl;
         cout << endl;
         cout << data[0].name << " has won and taken : $ " << plus << " prize pool. Congratulations!" << endl;
         cout << endl;
@@ -298,17 +293,18 @@ void Boards()
         data[1].balance = data[1].balance - data[1].bet;
 
         ofstream outFile("Bets.txt", ios::app); // open file in append mode
-        outFile << "================ GAME RESULT ================\n";
-        outFile << data[0].name << " WON and earned $" << plus << ".\n";
-        outFile << data[1].name << " LOST and lost $" << data[1].bet << ".\n";
-        outFile << "=============================================\n\n";
-        outFile.close();
+        outFile << endl;
+        outFile << data[0].name;
+        outFile << " Bingo Score: 100" << endl;
+
+        outFile << data[1].name;
+        outFile << " Bingo Score: 50" << endl;
     }
     else if (score2 == 25)
     {
         SetConsoleTextAttribute(hConsole, 3);
         cout << endl;
-        cout << "================ GAME RESULT ================" << endl;
+        cout << "================ BINGO RESULT ================" << endl;
         cout << endl;
         plus = data[1].bet + data[0].bet;
 
@@ -321,11 +317,12 @@ void Boards()
         data[0].balance = data[0].balance - data[0].bet;
 
         ofstream outFile("Bets.txt", ios::app); // append to file
-        outFile << "================ GAME RESULT ================\n";
-        outFile << data[1].name << " WON and earned $" << plus << ".\n";
-        outFile << data[0].name << " LOST and lost $" << data[0].bet << ".\n";
-        outFile << "=============================================\n\n";
-        outFile.close();
+        outFile << endl;
+        outFile << data[1].name;
+        outFile << " Bingo Score: 100" << endl;
+
+        outFile << data[0].name;
+        outFile << " Bingo Score: 50" << endl;
     }
 }
 
