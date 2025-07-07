@@ -6,23 +6,16 @@
 #include <fstream>
 #include <windows.h>
 #include <string>
-#include <cstdlib> // for rand() and srand()
-#include <ctime>   // for time()
-#include <random>  // for modern generator (recommended)
+#include <cstdlib>
+#include <ctime>
+#include <random>
 
 using namespace std;
+
 const int rows = 5;
 const int cols = 5;
 int board1[rows][cols];
 int board2[rows][cols];
-
-struct Player
-{
-    int balance;
-    string name;
-    int age;
-    float bet;
-};
 
 extern Player data[2];
 
@@ -78,7 +71,6 @@ void RunningBingo()
                                                      ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
             )" << endl;
 
-            cout << endl;
             cout << "\t\t\t\t\t\t\t   ══════════════════════════════" << endl;
             cout << "\t\t\t\t\t\t\t\t" << "Welcome: " << data[k].name << endl;
             cout << "\t\t\t\t\t\t\t\tHow much do you want to bet? " << endl;
@@ -116,7 +108,6 @@ void RunningBingo()
 void BingoCards()
 {
     srand(time(0));
-
     for (int i = 0; i < rows; i++)
     {
         cout << "\t\t\t";
@@ -172,37 +163,33 @@ void Boards()
     for (int i = 0; i < rows; i++)
     {
         cout << "\t\t\t";
-        // Player 1
         for (int j = 0; j < cols; j++)
         {
             if (board1[i][j] == -2)
             {
                 SetConsoleTextAttribute(hConsole, 3);
-                cout << " [ XX ] "; // mark number as XX
+                cout << " [ XX ] ";
             }
             else if (board1[i][j] < 10)
             {
                 SetConsoleTextAttribute(hConsole, 5);
-
                 cout << " [ 0" << board1[i][j] << " ] ";
             }
             else
             {
                 SetConsoleTextAttribute(hConsole, 5);
-
                 cout << " [ " << board1[i][j] << " ] ";
             }
         }
 
         cout << "\t\t\t";
 
-        // Player 2
         for (int j = 0; j < cols; j++)
         {
             if (board2[i][j] == -2)
             {
                 SetConsoleTextAttribute(hConsole, 3);
-                cout << " [ XX ] "; // mark number as XX
+                cout << " [ XX ] ";
             }
             else if (board2[i][j] < 10)
             {
@@ -228,14 +215,9 @@ void Boards()
         for (int j = 0; j < cols; j++)
         {
             if (board1[i][j] == -2)
-            {
                 score1++;
-            }
-
             if (board2[i][j] == -2)
-            {
                 score2++;
-            }
         }
     }
 
@@ -244,7 +226,7 @@ void Boards()
     cout << "\n";
     cout << "            \t     ╔══════════════════════════╦═══════════════════════╗\n";
     cout << "            \t     ║ " << data[0].name << "\t\t\t\t" << data[1].name << "\t\t" << endl;
-    cout << "            \t     ║ " << "  \t                                        ║" << endl;
+    cout << "            \t     ║  \t                                        ║" << endl;
     cout << "            \t     ╠══════════════════════════╬═══════════════════════╣\n";
     cout << "            \t     ║        ";
 
@@ -266,7 +248,6 @@ void Boards()
 
     cout << "   ║\n";
     cout << "            \t     ╚══════════════════════════╩═══════════════════════╝\n";
-    cout << endl;
 
     bool Win = false;
     int plus = 0;
@@ -274,55 +255,38 @@ void Boards()
     if (score1 != 25 && score2 != 25)
     {
         cout << "Waiting for a winner..." << endl;
-        cout << endl;
     }
     if (score1 == 25)
     {
         SetConsoleTextAttribute(hConsole, 3);
-
         plus = data[0].bet + data[1].bet;
-
         Win = true;
-
         cout << "================ BINGO RESULT ================" << endl;
-        cout << endl;
         cout << data[0].name << " has won and taken : $ " << plus << " prize pool. Congratulations!" << endl;
-        cout << endl;
         cout << data[1].name << " has lost his $" << data[1].bet << " bet. Better luck next time." << endl;
         cout << "=============================================" << endl;
-        data[1].balance = data[1].balance - data[1].bet;
+        data[1].balance -= data[1].bet;
 
-        ofstream outFile("Bets.txt", ios::app); // open file in append mode
+        ofstream outFile("Bets.txt", ios::app);
         outFile << endl;
-        outFile << data[0].name;
-        outFile << " Bingo Score: 100" << endl;
-
-        outFile << data[1].name;
-        outFile << " Bingo Score: 50" << endl;
+        outFile << data[0].name << " Bingo Score: 100" << endl;
+        outFile << data[1].name << " Bingo Score: 50" << endl;
     }
     else if (score2 == 25)
     {
         SetConsoleTextAttribute(hConsole, 3);
-        cout << endl;
-        cout << "================ BINGO RESULT ================" << endl;
-        cout << endl;
         plus = data[1].bet + data[0].bet;
-
         Win = true;
+        cout << "================ BINGO RESULT ================" << endl;
         cout << data[1].name << " has won and taken : $ " << plus << " prize pool. Congratulations!" << endl;
-        cout << endl;
-
         cout << data[0].name << " has lost his $" << data[0].bet << " bet. Better luck next time." << endl;
         cout << "=============================================" << endl;
-        data[0].balance = data[0].balance - data[0].bet;
+        data[0].balance -= data[0].bet;
 
-        ofstream outFile("Bets.txt", ios::app); // append to file
+        ofstream outFile("Bets.txt", ios::app);
         outFile << endl;
-        outFile << data[1].name;
-        outFile << " Bingo Score: 100" << endl;
-
-        outFile << data[0].name;
-        outFile << " Bingo Score: 50" << endl;
+        outFile << data[1].name << " Bingo Score: 100" << endl;
+        outFile << data[0].name << " Bingo Score: 50" << endl;
     }
 }
 
@@ -332,7 +296,6 @@ bool CardComplete(int board[rows][cols])
         for (int j = 0; j < cols; j++)
             if (board[i][j] != -2)
                 return false;
-
     return true;
 }
 
@@ -342,10 +305,8 @@ void Play()
     {
         system("pause");
         system("cls");
-
         RandomNumber();
         Boards();
-
     } while (!CardComplete(board1) && !CardComplete(board2));
 }
 

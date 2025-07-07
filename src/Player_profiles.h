@@ -1,51 +1,50 @@
+#ifndef PLAYER_PROFILES_H
+#define PLAYER_PROFILES_H
+
 #include <iostream>
 #include <fstream>
-#include <windows.h> // REQUIRED for SetConsoleOutputCP
-#include "Bingo.h"
-
+#include <windows.h>
+#include <string>
 using namespace std;
 
-Player data[2]; // This array holds 2 player profiles
+struct Player {
+    string name;
+    int age;
+    double balance;
+    float bet;
+};
+
+Player data[2];
 int total = 0;
 
-void add()
-{
+void add() {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hConsole, 9); // Light blue color
+    SetConsoleTextAttribute(hConsole, 9);
 
     cout << R"(
                                                         ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-                                                        
                                                            PLAYER PROFILE SETUP 
                                                         ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ 
     )" << endl;
 
-    if (total >= 2)
-    {
+    if (total >= 2) {
         cout << "Full capacity" << endl;
         return;
     }
 
-    for (int i = total; i < 2; i++) // Loop twice to fill the array
-    {
+    for (int i = total; i < 2; i++) {
         cout << " ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" << endl;
-        cout << endl;
         cout << "\n \t PLAYER PROFILE " << endl;
 
         cout << " \n \t Enter your name: ";
         cin >> data[i].name;
 
         bool valid = true;
-        for (int j = 0; j < data[i].name.length(); j++)
-        {
-            if (!isalpha(data[i].name[j]))
-            {
-                valid = false;
-            }
+        for (char c : data[i].name) {
+            if (!isalpha(c)) valid = false;
         }
 
-        if (!valid)
-        {
+        if (!valid) {
             cout << "\n \t Invalid name. Use only letters (no numbers or symbols)." << endl;
             exit(0);
         }
@@ -53,54 +52,39 @@ void add()
         cout << "\n \t Enter your age: ";
         cin >> data[i].age;
 
-        if (cin.fail())
-        {
+        if (cin.fail()) {
             cout << "\n\t\t Invalid number" << endl;
-            valid = false;
             exit(0);
-        }
-        else if (data[i].age < 18 || data[i].age > 90)
-        {
+        } else if (data[i].age < 18 || data[i].age > 90) {
             cout << "\t \n Age restriction: only users aged 18 to 90 can play." << endl;
             exit(0);
         }
-        else
-        {
-            cout << "\n \t Enter your initial balance: $ ";
-            cin >> data[i].balance;
 
-            if (cin.fail())
-            {
-                cout << "\n\t\t Invalid number" << endl;
-                valid = false;
-                exit(0);
-            }
-            else if (data[i].balance < 500)
-            {
-                cout << "\n \t You do not have enough money to bet." << endl;
-                cout << "\n \t You must to bet more than $500." << endl;
-                cout << "\n\t Please restart the game." << endl;
-                exit(0);
-            }
-            else
-            {
-                ++total;
+        cout << "\n \t Enter your initial balance: $ ";
+        cin >> data[i].balance;
 
-                cout << "\n \t Added!" << endl;
-                cout << endl;
-                cout << " ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" << endl;
-            }
+        if (cin.fail()) {
+            cout << "\n\t\t Invalid number" << endl;
+            exit(0);
+        } else if (data[i].balance < 500) {
+            cout << "\n \t You do not have enough money to bet." << endl;
+            cout << "\n \t You must to bet more than $500." << endl;
+            cout << "\n\t Please restart the game." << endl;
+            exit(0);
         }
+
+        ++total;
+
+        cout << "\n \t Added!" << endl;
+        cout << " ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" << endl;
     }
 }
 
-void Save()
-{
-    ofstream file("src/Player_profiles.txt"); // Open or create file
+void Save() {
+    ofstream file("src/Player_profiles.txt");
 
-    for (int i = 0; i < total; i++)
-    {
-        file << data[i].name << " - " << data[i].age << " years " << "- $ " << data[i].balance << endl;
+    for (int i = 0; i < total; i++) {
+        file << data[i].name << " - " << data[i].age << " years - $ " << data[i].balance << endl;
     }
 
     file.close();
@@ -108,24 +92,4 @@ void Save()
     cout << "\n \t Player profiles saved successfully \n" << endl;
 }
 
-void open()
-{
-    ifstream file("Player_profiles.txt");
-    if (!file)
-    {
-        cout << "File not found" << endl;
-        return;
-    }
-
-    file >> total;
-    if (total > 2)
-    {
-        total = 2; // avoid overflow
-    }
-
-    for (int i = 0; i < total; ++i)
-    {
-        file >> data[i].name >> data[i].age;
-    }
-    file.close();
-}
+#endif

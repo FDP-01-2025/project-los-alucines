@@ -3,3 +3,6 @@ Adiss
 Bingo Score: 100
 Ada
 Bingo Score: 50
+
+Evelyn Bingo Score: 100
+Astrid Bingo Score: 50
