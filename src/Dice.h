@@ -173,6 +173,12 @@ void runTheHouseofDice()
         centerText("The game ended in a tie.");
     centerText("======================================================");
     centerText("Thank you for playing The House of Dice!");
+
+    
+
+
+
+
 }
 
 #endif

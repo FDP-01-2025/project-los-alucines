@@ -106,11 +106,6 @@ void RunningBingo()
                 valid = true;
                 cout << "\t\t\t\t\t\t\tBet registered successfully.\n";
                 system("cls");
-
-                ofstream outFile("Bets.txt", ios::app);
-                outFile << "Game" << endl;
-                outFile << "Player: " << data[k].name << ", Age: " << data[k].age << ", Bet: $" << data[k].bet << endl;
-                outFile.close();
             }
         }
     }
@@ -299,11 +294,11 @@ void Boards()
 
         ofstream outFile("Bets.txt", ios::app); // open file in append mode
         outFile << endl;
-        outFile << "================ BINGO RESULT ================\n";
-        outFile << data[0].name << " WON and earned $" << plus << ".\n";
-        outFile << data[1].name << " LOST and lost $" << data[1].bet << ".\n";
-        outFile << "=============================================\n\n";
-        outFile.close();
+        outFile << data[0].name;
+        outFile << " Bingo Score: 100" << endl;
+
+        outFile << data[1].name;
+        outFile << " Bingo Score: 50" << endl;
     }
     else if (score2 == 25)
     {
@@ -323,11 +318,11 @@ void Boards()
 
         ofstream outFile("Bets.txt", ios::app); // append to file
         outFile << endl;
-        outFile << "================ BINGO RESULT ================\n";
-        outFile << data[1].name << " WON and earned $" << plus << ".\n";
-        outFile << data[0].name << " LOST and lost $" << data[0].bet << ".\n";
-        outFile << "=============================================\n\n";
-        outFile.close();
+        outFile << data[1].name;
+        outFile << " Bingo Score: 100" << endl;
+
+        outFile << data[0].name;
+        outFile << " Bingo Score: 50" << endl;
     }
 }
 
