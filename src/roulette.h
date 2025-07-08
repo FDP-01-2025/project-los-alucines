@@ -119,7 +119,7 @@ void playRoulette(Player &player) {
             player.wins++;
         } else {
             cout << "You LOST $" << bet << ". 💸\n";
-            player.money -= bet;
+            player.money -= Bet;
         }
 
         cout << "Current balance: $" << player.money << "\n";
