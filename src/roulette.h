@@ -5,7 +5,7 @@
 
 void playRoulette(Player &player);
 
-#endif 
+#endif
 
 #include <iostream>
 #include <cstdlib>
@@ -13,6 +13,7 @@ void playRoulette(Player &player);
 #include <fstream>
 #include <string>
 #include <algorithm>
+#include <limits>
 
 #include "roulette.h"
 #include "Player_profiles.h"
@@ -35,7 +36,9 @@ string toLower(string str) {
 int validateBet(int money) {
     int bet;
     cin >> bet;
-    if (bet > money || bet < 1) {
+    if (bet > money || bet < 1 || cin.fail()) {
+        cin.clear();
+        cin.ignore(1000, '\n');
         cout << "Invalid bet! Betting $1 by default.\n";
         return 1;
     }
@@ -46,16 +49,7 @@ void playRoulette(Player &player) {
     srand((unsigned)time(nullptr));
     int rounds = 5;
 
-    cout << R"(
-  _____   _    _ _      _      _       
- |  __ \ | |  | (_)    | |    | |      
- | |__) || |__| |_ ___ | | __ | |_ ___ 
- |  _  / |  __  | / __|| |/ / | __/ _ \
- | | \ \ | |  | | \__ \|   <  | ||  __/
- |_|  \_\|_|  |_|_|___/_|\_\  \__\___|
-
-)" << "\n";
-    cout << "===== ROULETTE =====\n";
+    cout << "\n===== ROULETTE =====\n";
     cout << "Starting balance: $" << player.money << "\n";
     cout << "You will play " << rounds << " rounds.\n";
     cout << "Bet types:\n"
@@ -103,7 +97,7 @@ void playRoulette(Player &player) {
 
         if (type == 1 && guessNum == result) {
             win = true; payout = bet * 35;
-        } else if (type == 2 && color.size() && toLower(color) == guessStr) {
+        } else if (type == 2 && toLower(color) == guessStr) {
             win = true; payout = bet * 2;
         } else if (type == 3) {
             if (result != 0) {
@@ -119,7 +113,7 @@ void playRoulette(Player &player) {
             player.wins++;
         } else {
             cout << "You LOST $" << bet << ". 💸\n";
-            player.money -= Bet;
+            player.money -= bet;
         }
 
         cout << "Current balance: $" << player.money << "\n";
