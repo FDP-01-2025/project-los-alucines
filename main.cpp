@@ -14,9 +14,9 @@ int main()
 {
 
     int option;
+
     do
     {
-
         SetConsoleOutputCP(CP_UTF8); // Set console to UTF-8 encoding
         Logo();                      // Display the logo
 

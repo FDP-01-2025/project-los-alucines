@@ -1,0 +1,8 @@
+=== ROULETTE ===
+Player: Asa
+Final Money: $867
+Rounds Won: 2
+Player: e
+Final Money: $1089
+Rounds Won: 3
+---------------------------

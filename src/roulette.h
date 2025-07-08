@@ -87,7 +87,7 @@ void playRoulette()
 
     for (int round = 1; round <= rounds; round++)
     {
-        if (data[0].balance <= 0 && data[1].balance <= 0)
+        if (data[0].balance <= 500 && data[1].balance <= 500)
             break;
 
         system("cls");
@@ -98,7 +98,7 @@ void playRoulette()
 
         for (int i = 0; i < 2; i++)
         {
-            if (data[i].balance <= 0)
+            if (data[i].balance <= 100)
             {
                 cout << data[i].name << " is out of money.\n";
                 continue;
@@ -119,7 +119,7 @@ void playRoulette()
             }
 
             cout << "Enter bet amount: $";
-            bet[i] = validateBet(data[i].balance);
+            cin >> data[i].bet;
 
             if (type[i] == 1)
             {
@@ -197,8 +197,8 @@ void playRoulette()
             }
             else
             {
-                cout << data[i].name << " lost $" << bet[i] << ".\n";
-                data[i].balance -= bet[i];
+                cout << data[i].name << " lost $" << data[i].bet << ".\n";
+                data[i].balance -= data[i].bet;
             }
         }
 
@@ -218,18 +218,16 @@ void playRoulette()
         cout << "It's a tie!\n";
 
     ofstream file("Roulette_scores.txt", ios::app);
-    if (file)
+
+    file << "=== ROULETTE ===\n";
+    for (int i = 0; i < 2; i++)
     {
-        file << "=== ROULETTE ===\n";
-        for (int i = 0; i < 2; i++)
-        {
-            file << "Player: " << data[i].name << "\n";
-            file << "Final Money: $" << data[i].balance << "\n";
-            file << "Rounds Won: " << data[i].wins << "\n";
-        }
-        file << "---------------------------\n";
-        file.close();
+        file << "Player: " << data[i].name << "\n";
+        file << "Final Money: $" << data[i].balance << "\n";
+        file << "Rounds Won: " << data[i].wins << "\n";
     }
+    file << "---------------------------\n";
+    file.close();
 
     cout << "Score saved.\n";
 }
