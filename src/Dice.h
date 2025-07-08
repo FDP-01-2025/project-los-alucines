@@ -9,7 +9,7 @@
 #include <fstream>
 #include <windows.h>
 
-#include "Player_profiles.h"     
+#include "Player_profiles.h"
 extern Player data[2];
 
 using namespace std;
@@ -89,7 +89,8 @@ void runTheHouseofDice()
     cin.get();
 
     int round = 1;
-    while (wins[0] < 3 && wins[1] < 3 && round <= 6) {
+    while (wins[0] < 3 && wins[1] < 3 && round <= 6)
+    {
         system("cls");
         cout << endl;
         centerText("ROUND " + to_string(round));
@@ -99,7 +100,8 @@ void runTheHouseofDice()
         for (int i = 0; i < 2; i++)
         {
             centerText(data[i].name + ", you have $" + to_string(data[i].balance) + ". Enter your bet:");
-            cout << "\t\t\t"; cin >> bet[i];
+            cout << "\t\t\t";
+            cin >> bet[i];
             if (bet[i] > data[i].balance || bet[i] <= 0)
             {
                 centerText("Invalid bet! A minimum bet of $1 was assigned.");
@@ -146,10 +148,10 @@ void runTheHouseofDice()
         centerText(data[0].name + " [" + to_string(wins[0]) + " wins, $" + to_string(data[0].balance) + "]");
         centerText("VS");
         centerText(data[1].name + " [" + to_string(wins[1]) + " wins, $" + to_string(data[1].balance) + "]");
-        
+
         centerText("Press any key to continue to the next round...");
         system("pause >nul");
-        
+
         round++;
 
         if (data[0].balance <= 0 || data[1].balance <= 0)

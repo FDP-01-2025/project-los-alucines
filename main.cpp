@@ -12,67 +12,73 @@ using namespace std;
 
 int main()
 {
+
     int option;
-
-    SetConsoleOutputCP(CP_UTF8); // Set console to UTF-8 encoding
-    Logo();                      // Display the logo
-
-    system("cls"); // Clear the screen
-
-    add();  // Add players
-    Save(); // Save player data
-
-    option = ShowMenu(); // Show the menu and store the chosen option
-
-    switch (option)
+    do
     {
-    case 1:
-        RunningBingo(); // Load player data and get bets
-        BingoCards();   // Generate bingo cards
-        RandomNumber(); // Generate first random number
-        Boards();       // Display boards and current scores
-        Play();         // Start game loop
-        break;
 
-    case 2:
-        cout << "Dice" << endl;
-        runTheHouseofDice(); // Run "The House of Dice" game
-        break;
+        SetConsoleOutputCP(CP_UTF8); // Set console to UTF-8 encoding
+        Logo();                      // Display the logo
 
-    case 3:
+        system("cls"); // Clear the screen
 
-        StartPokerBet();
-        ReadFiles();
-        dealCards();
+        add();  // Add players
+        Save(); // Save player data
 
-        printHandHorizontal(player1Hand, 5);
-        printHandHorizontal(player2Hand, 5);
+        option = ShowMenu(); // Show the menu and store the chosen option
 
-        changeCards(player1Hand, data[0].name);
-        changeCards(player2Hand, data[1].name);
+        switch (option)
+        {
+        case 1:
+            RunningBingo(); // Load player data and get bets
+            BingoCards();   // Generate bingo cards
+            RandomNumber(); // Generate first random number
+            Boards();       // Display boards and current scores
+            Play();         // Start game loop
+            Sleep(4000);
+            break;
 
-        printHandHorizontal(player1Hand, 5);
-        printHandHorizontal(player2Hand, 5);
+        case 2:
+            cout << "Dice" << endl;
+            runTheHouseofDice(); // Run "The House of Dice" game
+            Sleep(4000);
+            break;
 
-        evaluateHands();
+        case 3:
 
-        break;
+            StartPokerBet();
+            ReadFiles();
+            dealCards();
 
-    case 4:
-        cout << "Roulette" << endl;
-        playRoulette();
-        break;
+            printHandHorizontal(player1Hand, 5);
+            printHandHorizontal(player2Hand, 5);
 
-    case 5:
-        exit(0); // Exit the program
-        break;
+            changeCards(player1Hand, data[0].name);
+            changeCards(player2Hand, data[1].name);
 
-    default:
-        break;
-    }
+            printHandHorizontal(player1Hand, 5);
+            printHandHorizontal(player2Hand, 5);
 
-    while (option != 5)
-        ; // Empty loop to keep console open if not exiting
+            evaluateHands();
+            Sleep(4000);
+
+            break;
+
+        case 4:
+            cout << "Roulette" << endl;
+            playRoulette();
+            Sleep(4000);
+            break;
+
+        case 5:
+            exit(0); // Exit the program
+            break;
+
+        default:
+            break;
+        }
+
+    } while (option != 5); // Empty loop to keep console open if not exiting
 
     system("pause"); // Pause before closing the console
     return 0;

@@ -7,7 +7,8 @@
 #include <string>
 using namespace std;
 
-struct Player {
+struct Player
+{
     string name;
     int age;
     double balance;
@@ -18,7 +19,8 @@ struct Player {
 Player data[2];
 int total = 0;
 
-void add() {
+void add()
+{
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, 9);
 
@@ -28,12 +30,14 @@ void add() {
                                                         ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ 
     )" << endl;
 
-    if (total >= 2) {
+    if (total >= 2)
+    {
         cout << "Full capacity" << endl;
         return;
     }
 
-    for (int i = total; i < 2; i++) {
+    for (int i = total; i < 2; i++)
+    {
         cout << " ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" << endl;
         cout << "\n \t PLAYER PROFILE " << endl;
 
@@ -41,11 +45,14 @@ void add() {
         cin >> data[i].name;
 
         bool valid = true;
-        for (char c : data[i].name) {
-            if (!isalpha(c)) valid = false;
+        for (char c : data[i].name)
+        {
+            if (!isalpha(c))
+                valid = false;
         }
 
-        if (!valid) {
+        if (!valid)
+        {
             cout << "\n \t Invalid name. Use only letters (no numbers or symbols)." << endl;
             exit(0);
         }
@@ -53,10 +60,13 @@ void add() {
         cout << "\n \t Enter your age: ";
         cin >> data[i].age;
 
-        if (cin.fail()) {
+        if (cin.fail())
+        {
             cout << "\n\t\t Invalid number" << endl;
             exit(0);
-        } else if (data[i].age < 18 || data[i].age > 90) {
+        }
+        else if (data[i].age < 18 || data[i].age > 90)
+        {
             cout << "\t \n Age restriction: only users aged 18 to 90 can play." << endl;
             exit(0);
         }
@@ -64,10 +74,13 @@ void add() {
         cout << "\n \t Enter your initial balance: $ ";
         cin >> data[i].balance;
 
-        if (cin.fail()) {
+        if (cin.fail())
+        {
             cout << "\n\t\t Invalid number" << endl;
             exit(0);
-        } else if (data[i].balance < 500) {
+        }
+        else if (data[i].balance < 500)
+        {
             cout << "\n \t You do not have enough money to bet." << endl;
             cout << "\n \t You must to bet more than $500." << endl;
             cout << "\n\t Please restart the game." << endl;
@@ -81,16 +94,19 @@ void add() {
     }
 }
 
-void Save() {
+void Save()
+{
     ofstream file("src/Player_profiles.txt");
 
-    for (int i = 0; i < total; i++) {
+    for (int i = 0; i < total; i++)
+    {
         file << data[i].name << " - " << data[i].age << " years - $ " << data[i].balance << endl;
     }
 
     file.close();
 
-    cout << "\n \t Player profiles saved successfully \n" << endl;
+    cout << "\n \t Player profiles saved successfully \n"
+         << endl;
 }
 
 #endif

@@ -1,7 +1,6 @@
 #ifndef BINGO_H
 #define BINGO_H
 
-
 #include <iostream>
 #include <sstream>
 #include <fstream>
