@@ -10,7 +10,7 @@
 #include <windows.h>
 
 #include "src/Player_profiles.h"     
-extern Player data[2]; 
+extern Player data[2];
 
 using namespace std;
 
@@ -52,47 +52,39 @@ void showDiceHorizontal(int d1, int d2)
     }
 }
 
+// Asegúrate de que add() y Save() estén declaradas en algún lado
 void runTheHouseofDice()
 {
     srand(time(0));
-    int wins[2] = {0, 0}; 
-    add();  
+    int wins[2] = {0, 0};
+    add();
     Save();
 
-    cout << endl;
+    system("cls");
     cout << R"(
 
-  _______ _            _     _                            _         
- |__   __| |          | |   | |                          | |        
-    | |  | |__   ___  | |__ | | ___  ___  ___ _ ____   __| | ___    
-    | |  | '_ \ / _ \ | '_ \| |/ _ \/ __|/ _ \ '__\ \ / /| |/ _ \   
-    | |  | | | |  __/ | | | | |  __/\__ \  __/ |   \ V / | | (_) |  
-    |_|  |_| |_|\___| |_| |_|_|\___||___/\___|_|    \_/  |_|\___/   
-
-      _    _                                                  
-     | |  | |                                                 
-     | |__| |_   _ _ __   ___  _____      _____  ___ _ __ ___ 
-     |  __  | | | | '_ \ / _ \/ __\ \ /\ / / _ \/ _ \ '__/ __|
-     | |  | | |_| | | | |  __/\__ \\ V  V /  __/  __/ |  \__ \
-     |_|  |_|\__,_|_| |_|\___||___/ \_/\_/ \___|\___|_|  |___/
-
-  
+                   ╔════════════════════════════════════════════════════════════════════════╗
+      ▓▓           ║                                                                        ║
+    ▓▓▓▓▓▓         ║   █████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█████     ║
+  ▓▓▓▓▓▓▓▓▓▓       ║   █    ▒▒▒▒▒▒▒▒▒▒▒▒▒ ▄ THE HOUSE OF DICE ▄ ▒▒▒▒▒▒▒▒▒▒▒▒▒    █     ║
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓     ║   █    ▒▒▒▒▒▒▒▒▒▒▒▒▒                     ▒▒▒▒▒▒▒▒▒▒▒▒▒    █     ║
+  ▓▓▓▓▓▓▓▓▓▓       ║   █████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█████     ║
+    ▓▓▓▓▓▓         ║                                                                        ║
+      ▓▓           ║                    WELCOME TO THE HOUSE OF DICE                        ║          ▓▓
+                   ║                                                                        ║        ▓▓▓▓▓▓
+                   ║   1. Players already entered their profiles.                           ║      ▓▓▓▓▓▓▓▓▓▓
+                   ║   2. Each starts with their chosen balance.                            ║    ▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                   ║   3. Both place a bet each round.                                       ║      ▓▓▓▓▓▓▓▓▓▓
+                   ║   4. Each player rolls 2 dice.                                          ║        ▓▓▓▓▓▓
+                   ║   5. Highest total wins the round and takes the opponent's bet.        ║          ▓▓
+                   ║   6. If it's a tie, nothing happens.                                    ║
+                   ║   7. First to reach 3 wins takes the game.                              ║
+                   ║   8. The game also ends if a player runs out of money.                 ║
+                   ║   9. After 6 rounds, the player with more wins is the winner.          ║
+                   ║                                                                        ║
+                   ╚════════════════════════════════════════════════════════════════════════╝
 
 )" << endl;
-
-    cout << endl;
-    centerText("=============== GAME RULES ===============");
-    centerText("1. Players already entered their profiles.");
-    centerText("2. Each starts with their chosen balance.");
-    centerText("3. Both place a bet each round.");
-    centerText("4. Each player rolls 2 dice.");
-    centerText("5. Highest total wins the round and takes the opponent's bet.");
-    centerText("6. If it's a tie, nothing happens.");
-    centerText("7. First to reach 3 wins takes the game.");
-    centerText("8. The game also ends if a player runs out of money.");
-    centerText("9. After 6 rounds, the player with more wins is the winner.");
-    centerText("==========================================");
-    cout << endl;
     centerText("Press ENTER to begin...");
     cin.ignore();
     cin.get();
@@ -180,7 +172,7 @@ void runTheHouseofDice()
     centerText("======================================================");
     centerText("Thank you for playing The House of Dice!");
 
-    ofstream file("Dice_scores.txt", ios::app); 
+    ofstream file("Dice_scores.txt", ios::app);
     file << "=== THE HOUSE OF DICE ===\n";
     file << "Player 1: " << data[0].name << " - Wins: " << wins[0] << " - Balance: $" << data[0].balance << endl;
     file << "Player 2: " << data[1].name << " - Wins: " << wins[1] << " - Balance: $" << data[1].balance << endl;
@@ -192,6 +184,6 @@ void runTheHouseofDice()
         file << "Result: Tie\n";
     file << "-----------------------------------------\n";
     file.close();
-    
 }
+
 #endif
