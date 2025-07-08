@@ -5,7 +5,7 @@
 
 void playRoulette(Player &player);
 
-#endif // ROULETTE_H
+#endif 
 
 #include <iostream>
 #include <cstdlib>
