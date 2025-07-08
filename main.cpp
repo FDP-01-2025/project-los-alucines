@@ -5,13 +5,8 @@
 #include "src/Bingo.h"
 #include "src/Menu.h"
 #include "src/Dice.h"
-<<<<<<< HEAD
-#include "src/roulette.h"
-=======
-#include "src/Poker.h"
 #include "src/Roulette.h"
-
->>>>>>> dea8ef3f3665ca5a90ff320dba0c530b5a1a478a
+#include "src/Poker.h"
 
 using namespace std;
 
