@@ -267,11 +267,13 @@ void Boards()
         cout << "=============================================" << endl;
         data[1].balance -= data[1].bet;
 
-        ofstream outFile("Bets.txt", ios::app);
-        outFile << endl;
-        outFile << data[0].name << " Bingo Score: 100" << endl;
-        outFile << data[1].name << " Bingo Score: 50" << endl;
+        ofstream file("Bingo_scores.txt", ios::app);
+        file << "=== BINGO GAME ===\n";
+        file << "Player 1: " << data[0].name << " - Wins: " << score1 << " - Balance: $" << data[0].balance << endl;
+        file << "Player 2: " << data[1].name << " - Wins: " << score2 << " - Balance: $" << data[1].balance << endl;
+        file.close();
     }
+
     else if (score2 == 25)
     {
         SetConsoleTextAttribute(hConsole, 3);
@@ -283,10 +285,11 @@ void Boards()
         cout << "=============================================" << endl;
         data[0].balance -= data[0].bet;
 
-        ofstream outFile("Bets.txt", ios::app);
-        outFile << endl;
-        outFile << data[1].name << " Bingo Score: 100" << endl;
-        outFile << data[0].name << " Bingo Score: 50" << endl;
+        ofstream file("Bingo_scores.txt", ios::app);
+        file << "=== BINGO GAME ===\n";
+        file << "Player 1: " << data[0].name << " - Wins: " << score1 << " - Balance: $" << data[0].balance << endl;
+        file << "Player 2: " << data[1].name << " - Wins: " << score2 << " - Balance: $" << data[1].balance << endl;
+        file.close();
     }
 }
 
