@@ -108,11 +108,11 @@ void playRoulette(Player &player) {
         }
 
         if (win) {
-            cout << "You WON $" << payout << "! 🎉\n";
+            cout << "You WON $" << payout << "! \n";
             player.money += payout;
             player.wins++;
         } else {
-            cout << "You LOST $" << bet << ". 💸\n";
+            cout << "You LOST $" << bet << ". ¿\n";
             player.money -= bet;
         }
 
