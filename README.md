@@ -96,21 +96,21 @@ mainMenu(), showLogo() – Menu
 
 10. **Libraries Used**📌
 
-<iostream> – Handles input and output (cin, cout).
+iostream: Handles input and output (cin, cout).
 
-<fstream> – Reads from and writes to .txt files (ifstream, ofstream).
+fstream: Reads from and writes to .txt files (ifstream, ofstream).
 
-<string> – Manages text input like player names, colors, and bets.
+string: Manages text input like player names, colors, and bets.
 
-<cstdlib> – Enables system functions (system("cls"), rand(), exit()).
+cstdlib: Enables system functions (system("cls"), rand(), exit()).
 
-<ctime> – Seeds random number generation (srand(time(NULL))).
+ctime: Seeds random number generation (srand(time(NULL))).
 
-<iomanip> – Formats output alignment (setw(), setprecision()).
+iomanip: Formats output alignment (setw(), setprecision()).
 
-<cctype> – Converts character cases (tolower(), toupper()).
+cctype: Converts character cases (tolower(), toupper()).
 
-<algorithm> – Sorts or compares arrays (sort()).
+algorithm: Sorts or compares arrays (sort()).
 
 ## Team💡
 
