@@ -52,7 +52,6 @@ void showDiceHorizontal(int d1, int d2)
     }
 }
 
-// Asegúrate de que add() y Save() estén declaradas en algún lado
 void runTheHouseofDice()
 {
     srand(time(0));
