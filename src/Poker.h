@@ -175,7 +175,6 @@ void imprimirCartaLinea(const Carta &carta, int linea)
 
 //Array donde se guarda el mazo de 52 cartas que se exportan desde el archivo .txt
 Carta mazo[52];
-string formatearCarta(const Carta &carta);
 
 void LeerArchivos()
 {
@@ -195,6 +194,13 @@ void LeerArchivos()
     }
 }
 
+// Declaración de las manos por cada jugador
+Carta manoJugador1[5];
+Carta manoJugador2[5];
+
+// Arreglo auxiliar para marcar qué cartas del mazo ya han sido repartidas
+bool cartaUsada[52] = {false};
+
 // Función que imprime las cartas horizontalmente
 void imprimirManoHorizontal(const Carta mano[], int numCartas)
 {
@@ -210,14 +216,6 @@ void imprimirManoHorizontal(const Carta mano[], int numCartas)
         cout << endl;
     }
 }
-
-
-// Declaración de las manos por cada jugador
-Carta manoJugador1[5];
-Carta manoJugador2[5];
-
-// Arreglo auxiliar para marcar qué cartas del mazo ya han sido repartidas
-bool cartaUsada[52] = {false};
 
 // Función que reparte 5 cartas aleatorias a cada jugador sin repetir
 void repartirCartas()
@@ -253,7 +251,10 @@ void repartirCartas()
         cartaUsada[indice] = true;
         cartasRepartidas++;
     }
+     // Mostrar manos originales
+    cout << "\nCartas de " << players[0].name << ":\n";
 }
+
 
 //Funcion para cambiar un maximo de 2 cartas por jugador
 void cambiarCartas(Carta mano[], const string& nombreJugador)
@@ -289,6 +290,123 @@ void cambiarCartas(Carta mano[], const string& nombreJugador)
         {
             cout << "No se cambió ninguna carta en este intento.\n\n";
         }
+    }
+    cout << "\nMano final de " << players[0].name << ":\n";
+}
+
+// Evalúa y compara ambas manos con reglas reales de póker
+void evaluarManos() {
+    // Conversión de string a valor numérico 
+    auto valorCarta = [](const string& numero) -> int {
+        if (numero == "A") return 1;
+        if (numero == "K") return 13;
+        if (numero == "Q") return 12;
+        if (numero == "J") return 11;
+        return atoi(numero.c_str());
+    };
+
+    // Evalúa una mano, asigna tipo de mano (0 a 8) y carta alta
+    auto evaluar = [&](Carta mano[5], int& tipoMano, int& cartaAlta) {
+        int valores[5];
+        string palos[5];
+        int conteo[14] = {0}; // índice 1 al 13
+        bool usado[14] = {false};
+
+        for (int i = 0; i < 5; i++) {
+            valores[i] = valorCarta(mano[i].numero);
+            palos[i] = mano[i].palo;
+            conteo[valores[i]]++;
+            usado[valores[i]] = true;
+        }
+
+        // Ordenar valores descendente (burbuja simple)
+        for (int i = 0; i < 4; i++) {
+            for (int j = i + 1; j < 5; j++) {
+                if (valores[i] < valores[j]) {
+                    int temp = valores[i];
+                    valores[i] = valores[j];
+                    valores[j] = temp;
+                }
+            }
+        }
+
+        // Comprobar si todas son del mismo palo
+        bool esColor = true;
+        for (int i = 1; i < 5; i++) {
+            if (palos[i] != palos[0]) {
+                esColor = false;
+                break;
+            }
+        }
+
+        // Comprobar si es escalera (5 valores consecutivos)
+        bool esEscalera = true;
+        for (int i = 1; i < 5; i++) {
+            if (valores[i] != valores[i - 1] - 1) {
+                esEscalera = false;
+                break;
+            }
+        }
+
+        // Comprobar escalera especial A-2-3-4-5
+        if (!esEscalera &&
+            valores[0] == 5 &&
+            valores[1] == 4 &&
+            valores[2] == 3 &&
+            valores[3] == 2 &&
+            valores[4] == 1) {
+            esEscalera = true;
+        }
+
+        // Detectar pares, tríos, póker
+        int pares = 0, trios = 0, poker = 0;
+        int valorPar1 = 0, valorPar2 = 0, valorTrio = 0, valorPoker = 0;
+
+        for (int i = 1; i <= 13; i++) {
+            if (conteo[i] == 4) { poker = 1; valorPoker = i; }
+            if (conteo[i] == 3) { trios++; valorTrio = i; }
+            if (conteo[i] == 2) {
+                pares++;
+                if (valorPar1 == 0) valorPar1 = i;
+                else valorPar2 = i;
+            }
+        }
+
+        // Clasificación por tipo de mano
+        if (esEscalera && esColor)      { tipoMano = 8; cartaAlta = valores[0]; }
+        else if (poker)                 { tipoMano = 7; cartaAlta = valorPoker; }
+        else if (trios && pares)        { tipoMano = 6; cartaAlta = valorTrio; }
+        else if (esColor)               { tipoMano = 5; cartaAlta = valores[0]; }
+        else if (esEscalera)            { tipoMano = 4; cartaAlta = valores[0]; }
+        else if (trios)                 { tipoMano = 3; cartaAlta = valorTrio; }
+        else if (pares == 2)            { tipoMano = 2; cartaAlta = (valorPar1 > valorPar2 ? valorPar1 : valorPar2); }
+        else if (pares == 1)            { tipoMano = 1; cartaAlta = valorPar1; }
+        else                            { tipoMano = 0; cartaAlta = valores[0]; } // carta más alta
+    };
+
+    // Evaluar ambas manos
+    int tipo1 = 0, tipo2 = 0;
+    int alta1 = 0, alta2 = 0;
+
+    evaluar(manoJugador1, tipo1, alta1);
+    evaluar(manoJugador2, tipo2, alta2);
+
+    cout << "\nResultado de la partida:\n";
+    cout << players[0].name << " tiene tipo " << tipo1 << " con carta alta " << alta1 << endl;
+    cout << players[1].name << " tiene tipo " << tipo2 << " con carta alta " << alta2 << endl;
+
+    // Mostrar ganador
+    if (tipo1 > tipo2) {
+        cout << "\n El ganador es: " << players[0].name << "\n";
+    } else if (tipo2 > tipo1) {
+        cout << "\n El ganador es: " << players[1].name << "\n";
+    } else {
+        if (alta1 > alta2)
+            cout << "\n El ganador es: " << players[0].name << "\n";
+        else if (alta2 > alta1)
+            cout << "\n El ganador es: " << players[1].name << "\n";
+        else
+            cout << "\n ¡Empate técnico!\n";
     }
 }
 

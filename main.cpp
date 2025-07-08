@@ -5,14 +5,8 @@
 #include "src/Bingo.h"
 #include "src/Menu.h"
 #include "src/Dice.h"
-<<<<<<< HEAD
-#include "src/Poker.h"
-#include "src/Roulette.h"
-
-=======
 #include "src/Roulette.h"
 #include "src/Poker.h"
->>>>>>> 1369a2c9bf03b28bd91033b337a38eb45a8aa7f1
 
 using namespace std;
 
@@ -46,13 +40,22 @@ int main()
         break;
 
     case 3:
-        cout << "Black Jack" << endl;
+    IniciarPokerBet(); // Leer archivo de jugadores
+    LeerArchivos(); // Leer cartas desde archivo
+    repartirCartas(); // Repartir cartas a los 2 jugadores
+    imprimirManoHorizontal(manoJugador1, 5); //Diseño horizontal de las cartas
+    imprimirManoHorizontal(manoJugador2, 5); //Diseño horizontal de las cartas
+    cambiarCartas(manoJugador1, players[0].name); // Permitir cambiar cartas (máximo 2 veces por jugador)
+    cambiarCartas(manoJugador2, players[1].name); // Permitir cambiar cartas (máximo 2 veces por jugador)
+    imprimirManoHorizontal(manoJugador1, 5); // Mostrar manos finales
+    imprimirManoHorizontal(manoJugador2, 5); // Mostrar manos finales
+    evaluarManos();// Evaluar y mostrar ganador
         break;
+
     case 4:
         cout << "Roulette" << endl;
-        playRoulette(player);
         break;
-    
+
     case 5:
         exit(0); // Exit the program
         break;
