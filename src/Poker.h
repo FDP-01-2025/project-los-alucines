@@ -15,8 +15,109 @@
 // Para rand() y srand() que sera el random para barajear y repartir cartas
 #include <ctime>    
 // Inicializa el random con un valor diferente cada vez
+#include <sstream> 
+//Se utilizara para convertir dato tipo string en int
+#include <windows.h> 
+//Para funciones especificas de windows, dormir el sistema Sleep() para limpiar pantalla system("cls")
+
 
 using namespace std;
+
+
+// Estructura del jugador
+struct Player 
+{
+    string name;
+    int age;
+    float balance;
+    float bet;
+};
+
+// Arreglo para guardar hasta 2 jugadores
+Player players[2];
+
+void IniciarPokerBet() 
+{
+    ifstream file("Player_profiles.txt");
+    if (!file.is_open()) 
+    {
+        cout << "ERROR: No se pudo abrir el archivo de jugadores." << endl;
+        return;
+    }
+
+    string line;
+    int i = 0;
+    while (getline(file, line) && i < 2) 
+    {
+        stringstream ss(line);
+        string name, skip1, skip2, word1, symbol;
+        int age;
+        float balance;
+
+        ss >> name >> skip1 >> age >> word1 >> skip2 >> symbol >> balance;
+        players[i].name = name;
+        players[i].age = age;
+        players[i].balance = balance;
+        i++;
+    }
+    file.close();
+    system("cls");
+
+    for (int k = 0; k < i; k++) 
+    {
+        bool valid = false;
+        while (!valid) {
+            cout << R"(
+        
+                   ╔════════════════════════════════════════════════════════════════════════╗
+      ▓▓           ║                                                                        ║
+    ▓▓▓▓▓▓         ║   █████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█████     ║
+  ▓▓▓▓▓▓▓▓▓▓       ║   █    ▒▒▒▒▒▒▒▒▒▒▒▒▒ ♠ THE VEGAS ROYALE POKER ♠ ▒▒▒▒▒▒▒▒▒▒▒▒▒    █     ║
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓     ║   █    ▒▒▒▒▒▒▒▒▒▒▒▒▒                            ▒▒▒▒▒▒▒▒▒▒▒▒▒    █     ║
+  ▓▓▓▓▓▓▓▓▓▓       ║   █████▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█████     ║
+    ▓▓▓▓▓▓         ║                                                                        ║
+      ▓▓           ║   ♠ Welcome to the dazzling world of high stakes poker ♠               ║          ▓▓
+                   ║   ♦ Only $100 to enter. Winner takes all.                              ║        ▓▓▓▓▓▓
+                   ║   ♣ Use your skills. Bluff with style. Win BIG.                        ║      ▓▓▓▓▓▓▓▓▓▓
+                   ║   ♥ Only the brave bet. Only the best win.                             ║    ▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+                   ║                                                                        ║      ▓▓▓▓▓▓▓▓▓▓
+                   ║   Minimum Buy-In: $100   ||   Max Players: 2                           ║        ▓▓▓▓▓▓
+                   ╚════════════════════════════════════════════════════════════════════════╝          ▓▓
+
+            )" << endl;
+
+            cout << "\n\t\t\t Welcome, " << players[k].name << "!" << endl;
+            cout << "\t\t\t Enter your bet amount: $";
+            cin >> players[k].bet;
+
+            cout << "\n\t\t\t Processing your bet...\n";
+            Sleep(2000);
+
+            if (players[k].bet < 100) 
+            {
+                cout << "\n\t\t\t Minimum bet is $100. Try again.\n";
+                Sleep(2000);
+                system("cls");
+            } else if (players[k].bet > players[k].balance) 
+            {
+                cout << "\n\t\t\t Insufficient balance for that bet.\n";
+                Sleep(2000);
+                system("cls");
+            } else 
+            {
+                valid = true;
+                cout << "\n\t\t\t Bet of $" << players[k].bet << " registered successfully!\n";
+                Sleep(2000);
+                system("cls");
+            }
+        }
+    }
+
+    cout << R"(
+       LET THE CARDS FALL WHERE THEY MAY...
+    )" << endl;
+}
+
 
 // Estructura Carta
 struct Carta
