@@ -4,129 +4,191 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include <fstream>
-#include <string>
 #include <algorithm>
-#include <limits>
-
-#include "roulette.h"
-#include "Player_profiles.h"
+#include <string>
+#include <fstream>
 
 using namespace std;
 
-string getColor(int number) {
-    int reds[] = {1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36};
-    if (number == 0) return "Green";
-    for (int i = 0; i < 18; i++)
-        if (number == reds[i]) return "Red";
-    return "Black";
+struct Player {
+    string name;
+    int money;
+    int wins;
+};
+
+string dice[6][5] = {
+    {" ------- ", "|       |", "|   *   |", "|       |", " ------- "},
+    {" ------- ", "| *     |", "|       |", "|     * |", " ------- "},
+    {" ------- ", "| *     |", "|   *   |", "|     * |", " ------- "},
+    {" ------- ", "| *   * |", "|       |", "| *   * |", " ------- "},
+    {" ------- ", "| *   * |", "|   *   |", "| *   * |", " ------- "},
+    {" ------- ", "| *   * |", "| *   * |", "| *   * |", " ------- "}
+};
+
+void centerText(const string& text, int width = 60) {
+    int spaces = max(0, (width - static_cast<int>(text.length())) / 2);
+    for (int i = 0; i < spaces; i++) cout << " ";
+    cout << text << endl;
 }
 
-string toLower(string str) {
-    transform(str.begin(), str.end(), str.begin(), ::tolower);
-    return str;
+void centerDiceLine(const string& line, int width = 60) {
+    int spaces = max(0, (width - static_cast<int>(line.length())) / 2);
+    for (int i = 0; i < spaces; i++) cout << " ";
+    cout << line << endl;
 }
 
-int validateBet(int money) {
-    int bet;
-    cin >> bet;
-    if (bet > money || bet < 1 || cin.fail()) {
-        cin.clear();
-        cin.ignore(1000, '\n');
-        cout << "Invalid bet! Betting $1 by default.\n";
-        return 1;
+int rollDice() {
+    return rand() % 6 + 1;
+}
+
+void showDiceHorizontal(int d1, int d2) {
+    for (int i = 0; i < 5; i++) {
+        string line = dice[d1 - 1][i] + "   " + dice[d2 - 1][i];
+        centerDiceLine(line);
     }
-    return bet;
 }
 
-void playRoulette(Player &player) {
-    srand((unsigned)time(nullptr));
-    int rounds = 5;
+void saveGameResult(const Player& p1, const Player& p2) {
+    ofstream outFile("Dice_Results.txt", ios::app);
+    outFile << "=== THE HOUSE OF DICE ===" << endl;
+    outFile << "Player 1: " << p1.name << " | Wins: " << p1.wins << " | Final Money: $" << p1.money << endl;
+    outFile << "Player 2: " << p2.name << " | Wins: " << p2.wins << " | Final Money: $" << p2.money << endl;
+    if (p1.wins > p2.wins)
+        outFile << "Winner: " << p1.name << endl;
+    else if (p2.wins > p1.wins)
+        outFile << "Winner: " << p2.name << endl;
+    else
+        outFile << "Result: Tie" << endl;
+    outFile << "--------------------------" << endl;
+    outFile.close();
+}
 
-    cout << "\n===== ROULETTE =====\n";
-    cout << "Starting balance: $" << player.money << "\n";
-    cout << "You will play " << rounds << " rounds.\n";
-    cout << "Bet types:\n"
-         << " 1. Exact number (0‑36) — payout 35×\n"
-         << " 2. Color (Red/Black) — payout 2×\n"
-         << " 3. Even/Odd — payout 2×\n";
-    cout << "Enter a valid bet (min $1).\nPress ENTER to begin...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+void runTheHouseofDice() {
+    srand(time(0));
+
+    Player players[2];
+    cout << endl;
+    centerText("==================== THE HOUSE OF DICE ====================");
+    cout << R"(
+
+  _______ _            _     _                            _         
+ |__   __| |          | |   | |                          | |        
+    | |  | |__   ___  | |__ | | ___  ___  ___ _ ____   __| | ___    
+    | |  | '_ \ / _ \ | '_ \| |/ _ \/ __|/ _ \ '__\ \ / /| |/ _ \   
+    | |  | | | |  __/ | | | | |  __/\__ \  __/ |   \ V / | | (_) |  
+    |_|  |_| |_|\___| |_| |_|_|\___||___/\___|_|    \_/  |_|\___/   
+
+      _    _                                                  
+     | |  | |                                                 
+     | |__| |_   _ _ __   ___  _____      _____  ___ _ __ ___ 
+     |  __  | | | | '_ \ / _ \/ __\ \ /\ / / _ \/ _ \ '__/ __|
+     | |  | | |_| | | | |  __/\__ \\ V  V /  __/  __/ |  \__ \
+     |_|  |_|\__,_|_| |_|\___||___/ \_/\_/ \___|\___|_|  |___/
+
+)" << endl;
+    cout << endl;
+    centerText("=============== GAME RULES ===============");
+    centerText("1. Two players enter their names.");
+    centerText("2. Each starts with $500.");
+    centerText("3. Both place a bet each round.");
+    centerText("4. Each player rolls 2 dice.");
+    centerText("5. Highest total wins the round and takes the opponent's bet.");
+    centerText("6. If it's a tie, nothing happens.");
+    centerText("7. First to reach 3 wins takes the game.");
+    centerText("8. The game also ends if a player runs out of money.");
+    centerText("9. After 6 rounds, the player with more wins is the winner.");
+    centerText("==========================================");
+    cout << endl;
+    centerText("Press ENTER to begin...");
+    cin.ignore();
     cin.get();
 
-    player.wins = 0;
-    for (int i = 1; i <= rounds && player.money > 0; i++) {
-        system("cls");
-        cout << "ROUND " << i << " — Balance: $" << player.money << "\n";
-        cout << "Choose bet type (1‑3): ";
-        int type; cin >> type;
-        cout << "Enter bet amount: $";
-        int bet = validateBet(player.money);
+    centerText("Player 1, enter your name: ");
+    getline(cin, players[0].name);
+    centerText("Player 2, enter your name: ");
+    getline(cin, players[1].name);
 
-        int guessNum = -1;
-        string guessStr;
+      for (int i = 0; i < 2; i++) {
+        players[i].money = 500;
+        players[i].wins = 0;
+    }
 
-        if (type == 1) {
-            cout << "Pick number (0‑36): ";
-            cin >> guessNum;
-        } else if (type == 2) {
-            cout << "Pick color (Red/Black): ";
-            cin >> guessStr;
-            guessStr = toLower(guessStr);
-        } else if (type == 3) {
-            cout << "Pick (Even/Odd): ";
-            cin >> guessStr;
-            guessStr = toLower(guessStr);
-        } else {
-            cout << "Invalid choice, skipping round.\n";
-            continue;
-        }
+    int round = 1;
+    while (players[0].wins < 3 && players[1].wins < 3 && round <= 6) {
+        cout << endl;
+        centerText("ROUND " + to_string(round));
+        cout << endl;
 
-        int result = rand() % 37;
-        string color = getColor(result);
-        cout << "\nWheel spun: " << result << " (" << color << ")\n";
-
-        bool win = false;
-        int payout = 0;
-
-        if (type == 1 && guessNum == result) {
-            win = true; payout = bet * 35;
-        } else if (type == 2 && toLower(color) == guessStr) {
-            win = true; payout = bet * 2;
-        } else if (type == 3) {
-            if (result != 0) {
-                if (guessStr == "even" && result % 2 == 0) win = true;
-                if (guessStr == "odd" && result % 2 == 1) win = true;
+        int bet[2];
+        for (int i = 0; i < 2; i++) {
+            centerText(players[i].name + ", you have $" + to_string(players[i].money) + ". Enter your bet:");
+            cin >> bet[i];
+            if (bet[i] > players[i].money || bet[i] <= 0) {
+                centerText("Invalid bet! A minimum bet of $1 was assigned.");
+                bet[i] = 1;
             }
-            if (win) payout = bet * 2;
         }
 
-        if (win) {
-            cout << "You WON $" << payout << "! \n";
-            player.money += payout
-            player.wins++;
-        } else {
-            cout << "You LOST $" << bet << ". \n";
-            player.money -= bet;
+        int sum[2];
+        for (int i = 0; i < 2; i++) {
+            cout << endl;
+            centerText("Rolling dice for " + players[i].name + "...");
+            int d1 = rollDice();
+            int d2 = rollDice();
+            sum[i] = d1 + d2;
+            showDiceHorizontal(d1, d2);
+            centerText("Total: " + to_string(sum[i]));
         }
 
-        cout << "Current balance: $" << player.money << "\n";
-        system("pause");
-    }
+        if (sum[0] > sum[1]) {
+            cout << endl;
+            centerText(players[0].name + " wins this round!");
+            players[0].wins++;
+            players[0].money += bet[1];
+            players[1].money -= bet[1];
+        }
+        else if (sum[1] > sum[0]) {
+            cout << endl;
+            centerText(players[1].name + " wins the round.!");
+            players[1].wins++;
+            players[1].money += bet[0];
+            players[0].money -= bet[0];
+        }
+        else {
+            cout << endl;
+            centerText("It's a tie! No money exchanged");
+        }
 
-    cout << "\nGAME OVER\n";
-    cout << "Final balance: $" << player.money << "\n";
-    cout << "Rounds won: " << player.wins << "\n";
-
-    ofstream file("Roulette_scores.txt", ios::app);
-    if (file) {
-        file << "=== ROULETTE ===\n";
-        file << "Player: " << player.name << "\n";
-        file << "Final Money: $" << player.money << "\n";
-        file << "Rounds Won: " << player.wins << "\n";
-        file << "-----------------\n";
-        file.close();
-    }
-
-    cout << "Score saved. Thanks for playing!\n";
 }
+
+        cout << endl;
+        centerText("Current Scores:");
+        centerText(players[0].name + " [" + to_string(players[0].wins) + " wins, $" + to_string(players[0].money) + "]");
+        centerText("VS");
+        centerText(players[1].name + " [" + to_string(players[1].wins) + " wins, $" + to_string(players[1].money) + "]");
+
+        round++;
+        
+        if (players[0].money <= 0 || players[1].money <= 0) {
+            cout << endl;
+            centerText("A player has run out of money! Ending game...");
+            break;
+        }
+    }
+    
+    cout << endl;
+    centerText("==================== FINAL RESULT ====================");
+    if (players[0].wins > players[1].wins)
+        centerText(players[0].name + " wins the game with $" + to_string(players[0].money) + " remaining.");
+    else if (players[1].wins > players[0].wins)
+        centerText(players[1].name + " wins the game with $" + to_string(players[1].money) + " remaining.");
+    else
+        centerText("The game ended in a tie.");
+    centerText("======================================================");
+    centerText("Thank you for playing The House of Dice, enjoy the rest of the games!");
+
+    saveGameResult(players[0], players[1]);
+}
+
+#endif
