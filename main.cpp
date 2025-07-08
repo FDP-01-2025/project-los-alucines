@@ -5,14 +5,8 @@
 #include "src/Bingo.h"
 #include "src/Menu.h"
 #include "src/Dice.h"
-<<<<<<< HEAD
-#include "src/Poker.h"
-#include "src/Roulette.h"
-
-=======
 #include "src/Roulette.h"
 #include "src/Poker.h"
->>>>>>> 1369a2c9bf03b28bd91033b337a38eb45a8aa7f1
 
 using namespace std;
 
@@ -50,7 +44,7 @@ int main()
         break;
     case 4:
         cout << "Roulette" << endl;
-        playRoulette(player);
+        playRoulette(data);
         break;
     
     case 5:

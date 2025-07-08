@@ -1,12 +1,6 @@
 #ifndef ROULETTE_H
 #define ROULETTE_H
 
-#include "Player_profiles.h"
-
-void playRoulette(Player &player);
-
-#endif
-
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -14,12 +8,12 @@ void playRoulette(Player &player);
 #include <string>
 #include <algorithm>
 #include <limits>
-
-#include "roulette.h"
+#include <windows.h>
 #include "Player_profiles.h"
 
 using namespace std;
 
+// Returns the color associated with a roulette number
 string getColor(int number) {
     int reds[] = {1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36};
     if (number == 0) return "Green";
@@ -28,111 +22,179 @@ string getColor(int number) {
     return "Black";
 }
 
+// Converts a string to lowercase
 string toLower(string str) {
     transform(str.begin(), str.end(), str.begin(), ::tolower);
     return str;
 }
 
+// Validates the player's bet
 int validateBet(int money) {
     int bet;
     cin >> bet;
-    if (bet > money || bet < 1 || cin.fail()) {
+
+    if (cin.fail()) {
         cin.clear();
-        cin.ignore(1000, '\n');
-        cout << "Invalid bet! Betting $1 by default.\n";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Invalid input. Betting $1 by default.\n";
         return 1;
     }
+
+    if (bet > money || bet < 1) {
+        cout << "Invalid bet. Betting $1 by default.\n";
+        return 1;
+    }
+
     return bet;
 }
 
-void playRoulette(Player &player) {
+// Main roulette game for 2 players
+void playRoulette(Player data[2]) {
     srand((unsigned)time(nullptr));
     int rounds = 5;
 
-    cout << "\n===== ROULETTE =====\n";
-    cout << "Starting balance: $" << player.money << "\n";
-    cout << "You will play " << rounds << " rounds.\n";
+    system("cls");
+    cout << R"(
+
+  _____   _    _ _      _      _       
+ |  __ \ | |  | (_)    | |    | |      
+ | |) || || |_ ___ | | __ | |_ ___ 
+ |  _  / |  __  | / __|| |/ / | __/ _ \
+ | | \ \ | |  | | \__ \|   <  | ||  __/
+ ||  \\||  |||/|\\  \\_|
+
+)" << "\n";
+
+    cout << "===== ROULETTE =====\n";
+    cout << "Starting balances:\n";
+    cout << data[0].name << ": $" << data[0].money << "\n";
+    cout << data[1].name << ": $" << data[1].money << "\n";
     cout << "Bet types:\n"
          << " 1. Exact number (0‑36) — payout 35×\n"
          << " 2. Color (Red/Black) — payout 2×\n"
          << " 3. Even/Odd — payout 2×\n";
-    cout << "Enter a valid bet (min $1).\nPress ENTER to begin...";
+    cout << "Press ENTER to begin...";
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     cin.get();
 
-    player.wins = 0;
-    for (int i = 1; i <= rounds && player.money > 0; i++) {
+    for (int round = 1; round <= rounds; round++) {
+        if (data[0].money <= 0 && data[1].money <= 0) break;
+
         system("cls");
-        cout << "ROUND " << i << " — Balance: $" << player.money << "\n";
-        cout << "Choose bet type (1‑3): ";
-        int type; cin >> type;
-        cout << "Enter bet amount: $";
-        int bet = validateBet(player.money);
+        cout << "ROUND " << round << "\n";
 
-        int guessNum = -1;
-        string guessStr;
+        int type[2], bet[2], guessNum[2] = {-1, -1};
+        string guessStr[2];
 
-        if (type == 1) {
-            cout << "Pick number (0‑36): ";
-            cin >> guessNum;
-        } else if (type == 2) {
-            cout << "Pick color (Red/Black): ";
-            cin >> guessStr;
-            guessStr = toLower(guessStr);
-        } else if (type == 3) {
-            cout << "Pick (Even/Odd): ";
-            cin >> guessStr;
-            guessStr = toLower(guessStr);
-        } else {
-            cout << "Invalid choice, skipping round.\n";
-            continue;
+        for (int i = 0; i < 2; i++) {
+            if (data[i].money <= 0) {
+                cout << data[i].name << " is out of money.\n";
+                continue;
+            }
+
+            cout << "\n" << data[i].name << "'s turn — Balance: $" << data[i].money << "\n";
+            cout << "Choose bet type (1‑3): ";
+            cin >> type[i];
+
+            if (cin.fail() || type[i] < 1 || type[i] > 3) {
+                cin.clear();
+                cin.ignore(1000, '\n');
+                cout << "Invalid choice. Skipping turn.\n";
+                type[i] = 0;
+                continue;
+            }
+
+            cout << "Enter bet amount: $";
+            bet[i] = validateBet(data[i].money);
+
+            if (type[i] == 1) {
+                cout << "Pick number (0‑36): ";
+                cin >> guessNum[i];
+                if (cin.fail() || guessNum[i] < 0 || guessNum[i] > 36) {
+                    cin.clear();
+                    cin.ignore(1000, '\n');
+                    cout << "Invalid number. Skipping.\n";
+                    type[i] = 0;
+                }
+            } else if (type[i] == 2) {
+                cout << "Pick color (Red/Black): ";
+                cin >> guessStr[i];
+                guessStr[i] = toLower(guessStr[i]);
+                if (guessStr[i] != "red" && guessStr[i] != "black") {
+                    cout << "Invalid color. Skipping.\n";
+                    type[i] = 0;
+                }
+            } else if (type[i] == 3) {
+                cout << "Pick (Even/Odd): ";
+                cin >> guessStr[i];
+                guessStr[i] = toLower(guessStr[i]);
+                if (guessStr[i] != "even" && guessStr[i] != "odd") {
+                    cout << "Invalid choice. Skipping.\n";
+                    type[i] = 0;
+                }
+            }
         }
 
         int result = rand() % 37;
         string color = getColor(result);
-        cout << "\nWheel spun: " << result << " (" << color << ")\n";
+        cout << "\n>>> Wheel result: " << result << " (" << color << ")\n";
 
-        bool win = false;
-        int payout = 0;
+        for (int i = 0; i < 2; i++) {
+            if (type[i] == 0 || data[i].money <= 0) continue;
 
-        if (type == 1 && guessNum == result) {
-            win = true; payout = bet * 35;
-        } else if (type == 2 && toLower(color) == guessStr) {
-            win = true; payout = bet * 2;
-        } else if (type == 3) {
-            if (result != 0) {
-                if (guessStr == "even" && result % 2 == 0) win = true;
-                if (guessStr == "odd" && result % 2 == 1) win = true;
+            bool win = false;
+            int payout = 0;
+
+            if (type[i] == 1 && guessNum[i] == result) {
+                win = true; payout = bet[i] * 35;
+            } else if (type[i] == 2 && toLower(color) == guessStr[i]) {
+                win = true; payout = bet[i] * 2;
+            } else if (type[i] == 3 && result != 0) {
+                if ((guessStr[i] == "even" && result % 2 == 0) ||
+                    (guessStr[i] == "odd" && result % 2 == 1)) {
+                    win = true;
+                    payout = bet[i] * 2;
+                }
             }
-            if (win) payout = bet * 2;
+
+            if (win) {
+                cout << data[i].name << " won $" << payout << ".\n";
+                data[i].money += payout;
+                data[i].wins++;
+            } else {
+                cout << data[i].name << " lost $" << bet[i] << ".\n";
+                data[i].money -= bet[i];
+            }
         }
 
-        if (win) {
-            cout << "You WON $" << payout << "! \n";
-            player.money += payout;
-            player.wins++;
-        } else {
-            cout << "You LOST $" << bet << ". ¿\n";
-            player.money -= bet;
-        }
+        cout << "\nCurrent balances:\n";
+        cout << data[0].name << ": $" << data[0].money << " — Wins: " << data[0].wins << "\n";
+        cout << data[1].name << ": $" << data[1].money << " — Wins: " << data[1].wins << "\n";
 
-        cout << "Current balance: $" << player.money << "\n";
         system("pause");
     }
 
-    cout << "\nGAME OVER\n";
-    cout << "Final balance: $" << player.money << "\n";
-    cout << "Rounds won: " << player.wins << "\n";
+    cout << "\n===== FINAL RESULT =====\n";
+    if (data[0].wins > data[1].wins)
+        cout << data[0].name << " wins the game!\n";
+    else if (data[1].wins > data[0].wins)
+        cout << data[1].name << " wins the game!\n";
+    else
+        cout << "It's a tie!\n";
 
     ofstream file("Roulette_scores.txt", ios::app);
     if (file) {
         file << "=== ROULETTE ===\n";
-        file << "Player: " << player.name << "\n";
-        file << "Final Money: $" << player.money << "\n";
-        file << "Rounds Won: " << player.wins << "\n";
-        file << "-----------------\n";
+        for (int i = 0; i < 2; i++) {
+            file << "Player: " << data[i].name << "\n";
+            file << "Final Money: $" << data[i].money << "\n";
+            file << "Rounds Won: " << data[i].wins << "\n";
+        }
+        file << "---------------------------\n";
         file.close();
     }
 
-    cout << "Score saved. Thanks for playing!\n";
+    cout << "Score saved.\n";
 }
+
+#endif // ROULETTE_H
