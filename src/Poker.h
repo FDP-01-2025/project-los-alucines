@@ -460,9 +460,27 @@ void evaluateHands()
     else
     {
         if (high1 > high2)
+        {
             cout << "\n The winner is: " << data[0].name << "\n";
+
+            ofstream file("Poker_scores.txt", ios::app);
+            file << "=== POKER GAME ===\n";
+            file << "Player 1: " << data[0].name << " - Wins: 1" << " - Balance: $" << data[0].balance << endl;
+            file << "Player 2: " << data[1].name << " - Wins: 0" << " - Balance: $" << data[1].balance << endl;
+            file.close();
+        }
+
         else if (high2 > high1)
-            cout << "\n The winner is: " << data[1].name << "\n";
+        {
+            cout
+                << "\n The winner is: " << data[1].name << "\n";
+
+            ofstream file("Poker_scores.txt", ios::app);
+            file << "=== POKER GAME ===\n";
+            file << "Player 1: " << data[0].name << " - Wins: 0" << " - Balance: $" << data[0].balance << endl;
+            file << "Player 2: " << data[1].name << " - Wins: 1" << " - Balance: $" << data[1].balance << endl;
+            file.close();
+        }
         else
             cout << "\n Technical tie!\n";
     }
