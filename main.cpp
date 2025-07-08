@@ -19,19 +19,19 @@ int main()
 
     system("cls"); // Clear the screen
 
-    add();         // Add players
-    Save();        // Save player data
+    add();  // Add players
+    Save(); // Save player data
 
     option = ShowMenu(); // Show the menu and store the chosen option
 
     switch (option)
     {
     case 1:
-        RunningBingo();   // Load player data and get bets
-        BingoCards();     // Generate bingo cards
-        RandomNumber();   // Generate first random number
-        Boards();         // Display boards and current scores
-        Play();           // Start game loop
+        RunningBingo(); // Load player data and get bets
+        BingoCards();   // Generate bingo cards
+        RandomNumber(); // Generate first random number
+        Boards();       // Display boards and current scores
+        Play();         // Start game loop
         break;
 
     case 2:
@@ -40,24 +40,27 @@ int main()
         break;
 
     case 3:
-    IniciarPokerBet(); // Leer archivo de jugadores
-    LeerArchivos(); // Leer cartas desde archivo
-    repartirCartas(); // Repartir cartas a los 2 jugadores
-    imprimirManoHorizontal(manoJugador1, 5); //Diseño horizontal de las cartas
-    imprimirManoHorizontal(manoJugador2, 5); //Diseño horizontal de las cartas
-    cambiarCartas(manoJugador1, players[0].name); // Permitir cambiar cartas (máximo 2 veces por jugador)
-    cambiarCartas(manoJugador2, players[1].name); // Permitir cambiar cartas (máximo 2 veces por jugador)
-    imprimirManoHorizontal(manoJugador1, 5); // Mostrar manos finales
-    imprimirManoHorizontal(manoJugador2, 5); // Mostrar manos finales
-    evaluarManos();// Evaluar y mostrar ganador
+
+        StartPokerBet();
+        ReadFiles();
+        dealCards();
+
+        printHandHorizontal(player1Hand, 5);
+        printHandHorizontal(player2Hand, 5);
+
+        changeCards(player1Hand, data[0].name);
+        changeCards(player2Hand, data[1].name);
+
+        printHandHorizontal(player1Hand, 5);
+        printHandHorizontal(player2Hand, 5);
+
+        evaluateHands();
+
         break;
 
     case 4:
         cout << "Roulette" << endl;
-<<<<<<< HEAD
-        playRoulette(data);
-=======
->>>>>>> 5327efa864646c9b81bb2204956448954f1dc234
+        playRoulette();
         break;
 
     case 5:

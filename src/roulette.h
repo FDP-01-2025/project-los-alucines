@@ -15,7 +15,7 @@ using namespace std;
 
 // Returns the color associated with a roulette number
 string getColor(int number) {
-    int reds[] = {1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36};
+    int reds[] = {1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36};
     if (number == 0) return "Green";
     for (int i = 0; i < 18; i++)
         if (number == reds[i]) return "Red";
@@ -49,7 +49,7 @@ int validateBet(int money) {
 }
 
 // Main roulette game for 2 players
-void playRoulette(Player data[2]) {
+void playRoulette() {
     srand((unsigned)time(nullptr));
     int rounds = 5;
 
@@ -67,8 +67,8 @@ void playRoulette(Player data[2]) {
 
     cout << "===== ROULETTE =====\n";
     cout << "Starting balances:\n";
-    cout << data[0].name << ": $" << data[0].money << "\n";
-    cout << data[1].name << ": $" << data[1].money << "\n";
+    cout << data[0].name << ": $" << data[0].balance << "\n";
+    cout << data[1].name << ": $" << data[1].balance << "\n";
     cout << "Bet types:\n"
          << " 1. Exact number (0‑36) — payout 35×\n"
          << " 2. Color (Red/Black) — payout 2×\n"
@@ -78,7 +78,7 @@ void playRoulette(Player data[2]) {
     cin.get();
 
     for (int round = 1; round <= rounds; round++) {
-        if (data[0].money <= 0 && data[1].money <= 0) break;
+        if (data[0].balance <= 0 && data[1].balance <= 0) break;
 
         system("cls");
         cout << "ROUND " << round << "\n";
@@ -87,12 +87,12 @@ void playRoulette(Player data[2]) {
         string guessStr[2];
 
         for (int i = 0; i < 2; i++) {
-            if (data[i].money <= 0) {
+            if (data[i].balance <= 0) {
                 cout << data[i].name << " is out of money.\n";
                 continue;
             }
 
-            cout << "\n" << data[i].name << "'s turn — Balance: $" << data[i].money << "\n";
+            cout << "\n" << data[i].name << "'s turn — Balance: $" << data[i].balance << "\n";
             cout << "Choose bet type (1‑3): ";
             cin >> type[i];
 
@@ -105,7 +105,7 @@ void playRoulette(Player data[2]) {
             }
 
             cout << "Enter bet amount: $";
-            bet[i] = validateBet(data[i].money);
+            bet[i] = validateBet(data[i].balance);
 
             if (type[i] == 1) {
                 cout << "Pick number (0‑36): ";
@@ -140,7 +140,7 @@ void playRoulette(Player data[2]) {
         cout << "\n>>> Wheel result: " << result << " (" << color << ")\n";
 
         for (int i = 0; i < 2; i++) {
-            if (type[i] == 0 || data[i].money <= 0) continue;
+            if (type[i] == 0 || data[i].balance <= 0) continue;
 
             bool win = false;
             int payout = 0;
@@ -159,17 +159,17 @@ void playRoulette(Player data[2]) {
 
             if (win) {
                 cout << data[i].name << " won $" << payout << ".\n";
-                data[i].money += payout;
+                data[i].balance += payout;
                 data[i].wins++;
             } else {
                 cout << data[i].name << " lost $" << bet[i] << ".\n";
-                data[i].money -= bet[i];
+                data[i].balance -= bet[i];
             }
         }
 
         cout << "\nCurrent balances:\n";
-        cout << data[0].name << ": $" << data[0].money << " — Wins: " << data[0].wins << "\n";
-        cout << data[1].name << ": $" << data[1].money << " — Wins: " << data[1].wins << "\n";
+        cout << data[0].name << ": $" << data[0].balance << " — Wins: " << data[0].wins << "\n";
+        cout << data[1].name << ": $" << data[1].balance << " — Wins: " << data[1].wins << "\n";
 
         system("pause");
     }
@@ -187,7 +187,7 @@ void playRoulette(Player data[2]) {
         file << "=== ROULETTE ===\n";
         for (int i = 0; i < 2; i++) {
             file << "Player: " << data[i].name << "\n";
-            file << "Final Money: $" << data[i].money << "\n";
+            file << "Final Money: $" << data[i].balance << "\n";
             file << "Rounds Won: " << data[i].wins << "\n";
         }
         file << "---------------------------\n";
@@ -197,4 +197,4 @@ void playRoulette(Player data[2]) {
     cout << "Score saved.\n";
 }
 
-#endif // ROULETTE_H
+#endif // ROULETTE_H

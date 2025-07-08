@@ -309,6 +309,7 @@ void Play()
         RandomNumber();
         Boards();
     } while (!CardComplete(board1) && !CardComplete(board2));
+    return;
 }
 
 #endif

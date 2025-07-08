@@ -1,72 +1,32 @@
-//CAMBIAR COMENTARIOS A INGLES
-
 #ifndef Poker_H 
 #define Poker_H 
-//Estos dos son directivas para evitar incluir el archivo .h mas de una vez
+// These two are directives to avoid including the .h file more than once
 
 #include <iostream>
 #include <iomanip> 
-//Se utiliza para controlar como se muestran los datos en pantalla, Se utilizara para alinear los numeros de las cartas
+// Used to control how data is displayed on screen, will be used to align card numbers
 #include <string> 
-//Para utilizar datos tipo string
+// For using string data type
 #include <fstream> 
-//para uso de archivos
+// For file operations
 #include <cstdlib>  
-// Para rand() y srand() que sera el random para barajear y repartir cartas
+// For rand() and srand() which will be used for shuffling and dealing cards randomly
 #include <ctime>    
-// Inicializa el random con un valor diferente cada vez
+// Initializes the random seed with a different value each time
 #include <sstream> 
-//Se utilizara para convertir dato tipo string en int
+// Will be used to convert string data to int
 #include <windows.h> 
-//Para funciones especificas de windows, dormir el sistema Sleep() para limpiar pantalla system("cls")
-
+// For Windows-specific functions, Sleep() to pause, system("cls") to clear screen
+#include "Player_profiles.h"
 
 using namespace std;
 
+// Array to store up to 2 players
+extern Player data[2];
 
-// Estructura del jugador
-struct Player 
+void StartPokerBet() 
 {
-    string name;
-    int age;
-    float balance;
-    float bet;
-};
-
-// Arreglo para guardar hasta 2 jugadores
-Player players[2];
-
-void IniciarPokerBet() 
-{
-    ifstream file("Player_profiles.txt");
-    if (!file.is_open()) 
-    {
-        cout << "ERROR: No se pudo abrir el archivo de jugadores." << endl;
-        return;
-    }
-
-    string line;
-    int i = 0;
-    while (getline(file, line) && i < 2) 
-    {
-        stringstream ss(line);
-        string name, skip1, skip2, word1, symbol;
-        int age;
-        float balance;
-
-        ss >> name >> skip1 >> age >> word1 >> skip2 >> symbol >> balance;
-        players[i].name = name;
-        players[i].age = age;
-        players[i].balance = balance;
-        i++;
-    }
-    file.close();
-    system("cls");
-
-    for (int k = 0; k < i; k++) 
-    {
-        bool valid = false;
-        while (!valid) {
+    
             cout << R"(
 
                    ╔═══════════════════════════════════════════════════════════════════════╗
@@ -99,19 +59,22 @@ void IniciarPokerBet()
 
             )" << endl;
 
-            cout << "\n\t\t\t Welcome, " << players[k].name << "!" << endl;
+            bool valid = false;
+            for(int i = 0; i < 2; i++){
+                
+            cout << "\n\t\t\t Welcome, " << data[i].name << "!" << endl;
             cout << "\t\t\t Enter your bet amount: $";
-            cin >> players[k].bet;
+            cin >> data[i].bet;
 
             cout << "\n\t\t\t Processing your bet...\n";
             Sleep(2000);
 
-            if (players[k].bet < 100) 
+            if (data[i].bet < 100) 
             {
                 cout << "\n\t\t\t Minimum bet is $100. Try again.\n";
                 Sleep(2000);
                 system("cls");
-            } else if (players[k].bet > players[k].balance) 
+            } else if (data[i].bet > data[i].balance) 
             {
                 cout << "\n\t\t\t Insufficient balance for that bet.\n";
                 Sleep(2000);
@@ -119,12 +82,12 @@ void IniciarPokerBet()
             } else 
             {
                 valid = true;
-                cout << "\n\t\t\t Bet of $" << players[k].bet << " registered successfully!\n";
+                cout << "\n\t\t\t Bet of $" << data[i].bet << " registered successfully!\n";
                 Sleep(2000);
                 system("cls");
             }
         }
-    }
+    
 
     cout << R"(
 
@@ -142,53 +105,53 @@ void IniciarPokerBet()
 }
 
 
-// Estructura Carta
-struct Carta
+// Card structure
+struct Card
 {
-    string numero;
-    string palo;
+    string number;
+    string suit;
     string color;
 };
 
 
-// Función que imprime una línea específica de una carta
-void imprimirCartaLinea(const Carta &carta, int linea)
+// Function that prints a specific line of a card
+void printCardLine(const Card &card, int line)
 {
-    string paloSimbolo;
-    if (carta.palo == "corazones")
-        paloSimbolo = "♥";
-    else if (carta.palo == "diamantes")
-        paloSimbolo = "♦";
-    else if (carta.palo == "treboles")
-        paloSimbolo = "♣";
-    else if (carta.palo == "picas")
-        paloSimbolo = "♠";
+    string suitSymbol;
+    if (card.suit == "hearts")
+        suitSymbol = "♥";
+    else if (card.suit == "diamonds")
+        suitSymbol = "♦";
+    else if (card.suit == "clubs")
+        suitSymbol = "♣";
+    else if (card.suit == "spades")
+        suitSymbol = "♠";
     else
-        paloSimbolo = "?";
+        suitSymbol = "?";
 
-    string colorAnsi = (carta.color == "rosado") ? "\033[31m" : "\033[30m"; //cambio de color a las cartas
+    string colorAnsi = (card.color == "pink") ? "\033[31m" : "\033[30m"; //change card colors
     string resetAnsi = "\033[0m";
 
-    //Diseño de las cartas
-    switch (linea)
+    //Card design
+    switch (line)
     {
     case 0:
         cout << colorAnsi << "+---------+" << resetAnsi;
         break;
     case 1:
-        cout << colorAnsi << "| " << setw(2) << left << carta.numero << "      |" << resetAnsi;
+        cout << colorAnsi << "| " << setw(2) << left << card.number << "      |" << resetAnsi;
         break;
     case 2:
         cout << colorAnsi << "|         |" << resetAnsi;
         break;
     case 3:
-        cout << colorAnsi << "|   " << paloSimbolo << "     |" << resetAnsi;
+        cout << colorAnsi << "|   " << suitSymbol << "     |" << resetAnsi;
         break;
     case 4:
         cout << colorAnsi << "|         |" << resetAnsi;
         break;
     case 5:
-        cout << colorAnsi << "|      " << setw(2) << right << carta.numero << " |" << resetAnsi;
+        cout << colorAnsi << "|      " << setw(2) << right << card.number << " |" << resetAnsi;
         break;
     case 6:
         cout << colorAnsi << "+---------+" << resetAnsi;
@@ -196,240 +159,240 @@ void imprimirCartaLinea(const Carta &carta, int linea)
     }
 }
 
-//Array donde se guarda el mazo de 52 cartas que se exportan desde el archivo .txt
-Carta mazo[52];
+//Array where the 52-card deck is stored, imported from .txt file
+Card deck[52];
 
-void LeerArchivos()
+void ReadFiles()
 {
-    ifstream cartas("Cartas.txt");
-    if (cartas.is_open())
+    ifstream cards("Cards.txt");
+    if (cards.is_open())
     {
         for (int i = 0; i < 52; i++)
         {
-            cartas >> mazo[i].numero >> mazo[i].palo >> mazo[i].color;
+            cards >> deck[i].number >> deck[i].suit >> deck[i].color;
         }
     }
-    cartas.close();
+    cards.close();
 
     for (int i = 0; i < 52; i++)
     {
-        cout << mazo[i].numero << " - " << mazo[i].palo << " - "<< mazo[i].color << endl;
+        cout << deck[i].number << " - " << deck[i].suit << " - "<< deck[i].color << endl;
     }
 }
 
-// Declaración de las manos por cada jugador
-Carta manoJugador1[5];
-Carta manoJugador2[5];
+// Declaration of each player's hand
+Card player1Hand[5];
+Card player2Hand[5];
 
-// Arreglo auxiliar para marcar qué cartas del mazo ya han sido repartidas
-bool cartaUsada[52] = {false};
+// Auxiliary array to mark which cards in the deck have already been dealt
+bool usedCard[52] = {false};
 
-// Función que imprime las cartas horizontalmente
-void imprimirManoHorizontal(const Carta mano[], int numCartas)
+// Function that prints cards horizontally
+void printHandHorizontal(const Card hand[], int numCards)
 {
-    const int NUM_LIN = 7; // Cada carta tiene 7 líneas
+    const int NUM_LINES = 7; // Each card has 7 lines
 
-    for (int linea = 0; linea < NUM_LIN; ++linea)
+    for (int line = 0; line < NUM_LINES; ++line)
     {
-        for (int i = 0; i < numCartas; ++i)
+        for (int i = 0; i < numCards; ++i)
         {
-            imprimirCartaLinea(mano[i], linea);
-            cout << "  "; // Espacio entre cartas
+            printCardLine(hand[i], line);
+            cout << "  "; // Space between cards
         }
         cout << endl;
     }
 }
 
-// Función que reparte 5 cartas aleatorias a cada jugador sin repetir
-void repartirCartas()
+// Function that deals 5 random cards to each player without repeating
+void dealCards()
 {
-    srand(time(0)); // Inicializa la semilla para números aleatorios (una sola vez)
+    srand(time(0)); // Initialize random seed (only once)
 
-    int cartasRepartidas = 0;
+    int cardsDealt = 0;
 
-    // Repartir 5 cartas al jugador 1
+    // Deal 5 cards to player 1
     for (int i = 0; i < 5; i++)
     {
-        int indice;
+        int index;
         do
         {
-            indice = rand() % 52; // Genera un número aleatorio entre 0 y 51
-        } while (cartaUsada[indice]); // Repite mientras la carta ya haya sido usada
+            index = rand() % 52; // Generate random number between 0 and 51
+        } while (usedCard[index]); // Repeat while card has already been used
 
-        manoJugador1[i] = mazo[indice]; // Asigna la carta al jugador
-        cartaUsada[indice] = true;      // Marca la carta como usada
-        cartasRepartidas++;
+        player1Hand[i] = deck[index]; // Assign card to player
+        usedCard[index] = true;      // Mark card as used
+        cardsDealt++;
     }
 
-    // Repartir 5 cartas al jugador 2
+    // Deal 5 cards to player 2
     for (int i = 0; i < 5; i++)
     {
-        int indice;
+        int index;
         do
         {
-            indice = rand() % 52;
-        } while (cartaUsada[indice]);
+            index = rand() % 52;
+        } while (usedCard[index]);
 
-        manoJugador2[i] = mazo[indice];
-        cartaUsada[indice] = true;
-        cartasRepartidas++;
+        player2Hand[i] = deck[index];
+        usedCard[index] = true;
+        cardsDealt++;
     }
-     // Mostrar manos originales
-    cout << "\nCartas de " << players[0].name << ":\n";
+     // Show original hands
+    cout << "\n" << data[0].name << "'s cards:\n";
 }
 
 
-//Funcion para cambiar un maximo de 2 cartas por jugador
-void cambiarCartas(Carta mano[], const string& nombreJugador)
+//Function to change a maximum of 2 cards per player
+void changeCards(Card hand[], const string& playerName)
 {
-    for (int intento = 0; intento < 2; intento++) // Dos oportunidades de cambiar carta
+    for (int attempt = 0; attempt < 2; attempt++) // Two opportunities to change cards
     {
-        imprimirManoHorizontal(mano, 5);
-        cout << nombreJugador << ", ¿quieres cambiar una carta? (s/n): ";
-        char respuesta;
-        cin >> respuesta;
+        printHandHorizontal(hand, 5);
+        cout << playerName << ", do you want to change a card? (y/n): ";
+        char response;
+        cin >> response;
 
-        if (respuesta == 's' || respuesta == 'S')
+        if (response == 'y' || response == 'Y')
         {
-            int indice;
+            int index;
             do {
-                cout << "¿Cuál carta quieres cambiar? (1-5): ";
-                cin >> indice;
-            } while (indice < 1 || indice > 5);
+                cout << "Which card do you want to change? (1-5): ";
+                cin >> index;
+            } while (index < 1 || index > 5);
 
-            // Buscar una carta nueva no usada en el mazo
-            int nuevaCartaIndex;
+            // Find a new unused card in the deck
+            int newCardIndex;
             do {
-                nuevaCartaIndex = rand() % 52;
-            } while (cartaUsada[nuevaCartaIndex]);
+                newCardIndex = rand() % 52;
+            } while (usedCard[newCardIndex]);
 
-            // Reemplazar la carta en la mano
-            mano[indice - 1] = mazo[nuevaCartaIndex];
-            cartaUsada[nuevaCartaIndex] = true;
+            // Replace the card in the hand
+            hand[index - 1] = deck[newCardIndex];
+            usedCard[newCardIndex] = true;
 
-            cout << "Carta cambiada exitosamente.\n\n";
+            cout << "Card changed successfully.\n\n";
         }
         else
         {
-            cout << "No se cambió ninguna carta en este intento.\n\n";
+            cout << "No card was changed this attempt.\n\n";
         }
     }
-    cout << "\nMano final de " << players[0].name << ":\n";
+    cout << "\nFinal hand of " << data[0].name << ":\n";
 }
 
-// Evalúa y compara ambas manos con reglas reales de póker
-void evaluarManos() {
-    // Conversión de string a valor numérico 
-    auto valorCarta = [](const string& numero) -> int {
-        if (numero == "A") return 1;
-        if (numero == "K") return 13;
-        if (numero == "Q") return 12;
-        if (numero == "J") return 11;
-        return atoi(numero.c_str());
+// Evaluates and compares both hands with real poker rules
+void evaluateHands() {
+    // Conversion from string to numerical value 
+    auto cardValue = [](const string& number) -> int {
+        if (number == "A") return 1;
+        if (number == "K") return 13;
+        if (number == "Q") return 12;
+        if (number == "J") return 11;
+        return atoi(number.c_str());
     };
 
-    // Evalúa una mano, asigna tipo de mano (0 a 8) y carta alta
-    auto evaluar = [&](Carta mano[5], int& tipoMano, int& cartaAlta) {
-        int valores[5];
-        string palos[5];
-        int conteo[14] = {0}; // índice 1 al 13
-        bool usado[14] = {false};
+    // Evaluates a hand, assigns hand type (0 to 8) and high card
+    auto evaluate = [&](Card hand[5], int& handType, int& highCard) {
+        int values[5];
+        string suits[5];
+        int count[14] = {0}; // index 1 to 13
+        bool used[14] = {false};
 
         for (int i = 0; i < 5; i++) {
-            valores[i] = valorCarta(mano[i].numero);
-            palos[i] = mano[i].palo;
-            conteo[valores[i]]++;
-            usado[valores[i]] = true;
+            values[i] = cardValue(hand[i].number);
+            suits[i] = hand[i].suit;
+            count[values[i]]++;
+            used[values[i]] = true;
         }
 
-        // Ordenar valores descendente (burbuja simple)
+        // Sort values descending (simple bubble sort)
         for (int i = 0; i < 4; i++) {
             for (int j = i + 1; j < 5; j++) {
-                if (valores[i] < valores[j]) {
-                    int temp = valores[i];
-                    valores[i] = valores[j];
-                    valores[j] = temp;
+                if (values[i] < values[j]) {
+                    int temp = values[i];
+                    values[i] = values[j];
+                    values[j] = temp;
                 }
             }
         }
 
-        // Comprobar si todas son del mismo palo
-        bool esColor = true;
+        // Check if all cards are the same suit
+        bool isFlush = true;
         for (int i = 1; i < 5; i++) {
-            if (palos[i] != palos[0]) {
-                esColor = false;
+            if (suits[i] != suits[0]) {
+                isFlush = false;
                 break;
             }
         }
 
-        // Comprobar si es escalera (5 valores consecutivos)
-        bool esEscalera = true;
+        // Check if it's a straight (5 consecutive values)
+        bool isStraight = true;
         for (int i = 1; i < 5; i++) {
-            if (valores[i] != valores[i - 1] - 1) {
-                esEscalera = false;
+            if (values[i] != values[i - 1] - 1) {
+                isStraight = false;
                 break;
             }
         }
 
-        // Comprobar escalera especial A-2-3-4-5
-        if (!esEscalera &&
-            valores[0] == 5 &&
-            valores[1] == 4 &&
-            valores[2] == 3 &&
-            valores[3] == 2 &&
-            valores[4] == 1) {
-            esEscalera = true;
+        // Check special straight A-2-3-4-5
+        if (!isStraight &&
+            values[0] == 5 &&
+            values[1] == 4 &&
+            values[2] == 3 &&
+            values[3] == 2 &&
+            values[4] == 1) {
+            isStraight = true;
         }
 
-        // Detectar pares, tríos, póker
-        int pares = 0, trios = 0, poker = 0;
-        int valorPar1 = 0, valorPar2 = 0, valorTrio = 0, valorPoker = 0;
+        // Detect pairs, trios, four of a kind
+        int pairs = 0, trios = 0, fourKind = 0;
+        int pairValue1 = 0, pairValue2 = 0, trioValue = 0, fourKindValue = 0;
 
         for (int i = 1; i <= 13; i++) {
-            if (conteo[i] == 4) { poker = 1; valorPoker = i; }
-            if (conteo[i] == 3) { trios++; valorTrio = i; }
-            if (conteo[i] == 2) {
-                pares++;
-                if (valorPar1 == 0) valorPar1 = i;
-                else valorPar2 = i;
+            if (count[i] == 4) { fourKind = 1; fourKindValue = i; }
+            if (count[i] == 3) { trios++; trioValue = i; }
+            if (count[i] == 2) {
+                pairs++;
+                if (pairValue1 == 0) pairValue1 = i;
+                else pairValue2 = i;
             }
         }
 
-        // Clasificación por tipo de mano
-        if (esEscalera && esColor)      { tipoMano = 8; cartaAlta = valores[0]; }
-        else if (poker)                 { tipoMano = 7; cartaAlta = valorPoker; }
-        else if (trios && pares)        { tipoMano = 6; cartaAlta = valorTrio; }
-        else if (esColor)               { tipoMano = 5; cartaAlta = valores[0]; }
-        else if (esEscalera)            { tipoMano = 4; cartaAlta = valores[0]; }
-        else if (trios)                 { tipoMano = 3; cartaAlta = valorTrio; }
-        else if (pares == 2)            { tipoMano = 2; cartaAlta = (valorPar1 > valorPar2 ? valorPar1 : valorPar2); }
-        else if (pares == 1)            { tipoMano = 1; cartaAlta = valorPar1; }
-        else                            { tipoMano = 0; cartaAlta = valores[0]; } // carta más alta
+        // Hand type classification
+        if (isStraight && isFlush)      { handType = 8; highCard = values[0]; }
+        else if (fourKind)                 { handType = 7; highCard = fourKindValue; }
+        else if (trios && pairs)        { handType = 6; highCard = trioValue; }
+        else if (isFlush)               { handType = 5; highCard = values[0]; }
+        else if (isStraight)            { handType = 4; highCard = values[0]; }
+        else if (trios)                 { handType = 3; highCard = trioValue; }
+        else if (pairs == 2)            { handType = 2; highCard = (pairValue1 > pairValue2 ? pairValue1 : pairValue2); }
+        else if (pairs == 1)            { handType = 1; highCard = pairValue1; }
+        else                            { handType = 0; highCard = values[0]; } // high card
     };
 
-    // Evaluar ambas manos
-    int tipo1 = 0, tipo2 = 0;
-    int alta1 = 0, alta2 = 0;
+    // Evaluate both hands
+    int type1 = 0, type2 = 0;
+    int high1 = 0, high2 = 0;
 
-    evaluar(manoJugador1, tipo1, alta1);
-    evaluar(manoJugador2, tipo2, alta2);
+    evaluate(player1Hand, type1, high1);
+    evaluate(player2Hand, type2, high2);
 
-    cout << "\nResultado de la partida:\n";
-    cout << players[0].name << " tiene tipo " << tipo1 << " con carta alta " << alta1 << endl;
-    cout << players[1].name << " tiene tipo " << tipo2 << " con carta alta " << alta2 << endl;
+    cout << "\nGame result:\n";
+    cout << data[0].name << " has hand type " << type1 << " with high card " << high1 << endl;
+    cout << data[1].name << " has hand type " << type2 << " with high card " << high2 << endl;
 
-    // Mostrar ganador
-    if (tipo1 > tipo2) {
-        cout << "\n El ganador es: " << players[0].name << "\n";
-    } else if (tipo2 > tipo1) {
-        cout << "\n El ganador es: " << players[1].name << "\n";
+    // Show winner
+    if (type1 > type2) {
+        cout << "\n The winner is: " << data[0].name << "\n";
+    } else if (type2 > type1) {
+        cout << "\n The winner is: " << data[1].name << "\n";
     } else {
-        if (alta1 > alta2)
-            cout << "\n El ganador es: " << players[0].name << "\n";
-        else if (alta2 > alta1)
-            cout << "\n El ganador es: " << players[1].name << "\n";
+        if (high1 > high2)
+            cout << "\n The winner is: " << data[0].name << "\n";
+        else if (high2 > high1)
+            cout << "\n The winner is: " << data[1].name << "\n";
         else
-            cout << "\n ¡Empate técnico!\n";
+            cout << "\n Technical tie!\n";
     }
 }
 

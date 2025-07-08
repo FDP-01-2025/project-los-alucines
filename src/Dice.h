@@ -9,7 +9,7 @@
 #include <fstream>
 #include <windows.h>
 
-#include "src/Player_profiles.h"     
+#include "Player_profiles.h"     
 extern Player data[2];
 
 using namespace std;
@@ -99,7 +99,7 @@ void runTheHouseofDice()
         for (int i = 0; i < 2; i++)
         {
             centerText(data[i].name + ", you have $" + to_string(data[i].balance) + ". Enter your bet:");
-            cin >> bet[i];
+            cout << "\t\t\t"; cin >> bet[i];
             if (bet[i] > data[i].balance || bet[i] <= 0)
             {
                 centerText("Invalid bet! A minimum bet of $1 was assigned.");

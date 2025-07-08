@@ -12,6 +12,7 @@ struct Player {
     int age;
     double balance;
     float bet;
+    int wins;
 };
 
 Player data[2];
