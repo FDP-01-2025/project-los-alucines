@@ -45,7 +45,7 @@ int main()
             break;
 
         case 3:
-
+            SetConsoleOutputCP(CP_UTF8);
             StartPokerBet();
             ReadFiles();
             dealCards();

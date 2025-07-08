@@ -115,53 +115,57 @@ struct Card
     string color;
 };
 
-// Function that prints a specific line of a card
+Card deck[52];
+Card player1Hand[5];
+Card player2Hand[5];
+bool usedCard[52] = {false};
+
 void printCardLine(const Card &card, int line)
 {
     string suitSymbol;
     if (card.suit == "hearts")
-        suitSymbol = "♥";
+        suitSymbol = "H";
     else if (card.suit == "diamonds")
-        suitSymbol = "♦";
+        suitSymbol = "D";
     else if (card.suit == "clubs")
-        suitSymbol = "♣";
+        suitSymbol = "C";
     else if (card.suit == "spades")
-        suitSymbol = "♠";
+        suitSymbol = "S";
     else
         suitSymbol = "?";
 
-    string colorAnsi = (card.color == "pink") ? "\033[31m" : "\033[30m"; // change card colors
+    string colorAnsi = (card.color == "pink") ? "\033[31m" : "\033[30m";
     string resetAnsi = "\033[0m";
 
-    // Card design
+    // Manejo especial para el número 10
+    string displayNum = (card.number == "10") ? card.number : " " + card.number;
+    string rightNum = (card.number == "10") ? card.number : card.number + " ";
+
     switch (line)
     {
     case 0:
         cout << colorAnsi << "+---------+" << resetAnsi;
         break;
     case 1:
-        cout << colorAnsi << "| " << setw(2) << left << card.number << "      |" << resetAnsi;
+        cout << colorAnsi << "|" << displayNum << "       |" << resetAnsi;
         break;
     case 2:
         cout << colorAnsi << "|         |" << resetAnsi;
         break;
     case 3:
-        cout << colorAnsi << "|   " << suitSymbol << "     |" << resetAnsi;
+        cout << colorAnsi << "|    " << suitSymbol << "    |" << resetAnsi;
         break;
     case 4:
         cout << colorAnsi << "|         |" << resetAnsi;
         break;
     case 5:
-        cout << colorAnsi << "|      " << setw(2) << right << card.number << " |" << resetAnsi;
+        cout << colorAnsi << "|       " << rightNum << "|" << resetAnsi;
         break;
     case 6:
         cout << colorAnsi << "+---------+" << resetAnsi;
         break;
     }
 }
-
-// Array where the 52-card deck is stored, imported from .txt file
-Card deck[52];
 
 void ReadFiles()
 {
@@ -174,58 +178,25 @@ void ReadFiles()
         }
     }
     cards.close();
-
-    for (int i = 0; i < 52; i++)
-    {
-        cout << deck[i].number << " - " << deck[i].suit << " - " << deck[i].color << endl;
-    }
 }
 
-// Declaration of each player's hand
-Card player1Hand[5];
-Card player2Hand[5];
-
-// Auxiliary array to mark which cards in the deck have already been dealt
-bool usedCard[52] = {false};
-
-// Function that prints cards horizontally
 void printHandHorizontal(const Card hand[], int numCards)
 {
-    const int NUM_LINES = 7; // Each card has 7 lines
-
+    const int NUM_LINES = 7;
     for (int line = 0; line < NUM_LINES; ++line)
     {
         for (int i = 0; i < numCards; ++i)
         {
             printCardLine(hand[i], line);
-            cout << "  "; // Space between cards
+            cout << "  ";
         }
         cout << endl;
     }
 }
 
-// Function that deals 5 random cards to each player without repeating
 void dealCards()
 {
-    srand(time(0)); // Initialize random seed (only once)
-
-    int cardsDealt = 0;
-
-    // Deal 5 cards to player 1
-    for (int i = 0; i < 5; i++)
-    {
-        int index;
-        do
-        {
-            index = rand() % 52; // Generate random number between 0 and 51
-        } while (usedCard[index]); // Repeat while card has already been used
-
-        player1Hand[i] = deck[index]; // Assign card to player
-        usedCard[index] = true;       // Mark card as used
-        cardsDealt++;
-    }
-
-    // Deal 5 cards to player 2
+    srand(time(0));
     for (int i = 0; i < 5; i++)
     {
         int index;
@@ -233,20 +204,21 @@ void dealCards()
         {
             index = rand() % 52;
         } while (usedCard[index]);
+        player1Hand[i] = deck[index];
+        usedCard[index] = true;
 
+        do
+        {
+            index = rand() % 52;
+        } while (usedCard[index]);
         player2Hand[i] = deck[index];
         usedCard[index] = true;
-        cardsDealt++;
     }
-    // Show original hands
-    cout << "\n"
-         << data[0].name << "'s cards:\n";
 }
 
-// Function to change a maximum of 2 cards per player
 void changeCards(Card hand[], const string &playerName)
 {
-    for (int attempt = 0; attempt < 2; attempt++) // Two opportunities to change cards
+    for (int attempt = 0; attempt < 2; attempt++)
     {
         printHandHorizontal(hand, 5);
         cout << playerName << ", do you want to change a card? (y/n): ";
@@ -262,17 +234,14 @@ void changeCards(Card hand[], const string &playerName)
                 cin >> index;
             } while (index < 1 || index > 5);
 
-            // Find a new unused card in the deck
             int newCardIndex;
             do
             {
                 newCardIndex = rand() % 52;
             } while (usedCard[newCardIndex]);
 
-            // Replace the card in the hand
             hand[index - 1] = deck[newCardIndex];
             usedCard[newCardIndex] = true;
-
             cout << "Card changed successfully.\n\n";
         }
         else
