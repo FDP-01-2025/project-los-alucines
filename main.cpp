@@ -5,13 +5,9 @@
 #include "src/Bingo.h"
 #include "src/Menu.h"
 #include "src/Dice.h"
-<<<<<<< HEAD
-#include "src/roulette.h"
-=======
 #include "src/Poker.h"
 #include "src/Roulette.h"
 
->>>>>>> dea8ef3f3665ca5a90ff320dba0c530b5a1a478a
 
 using namespace std;
 
@@ -47,11 +43,11 @@ int main()
     case 3:
         cout << "Black Jack" << endl;
         break;
-
     case 4:
         cout << "Roulette" << endl;
+        playRoulette(player);
         break;
-
+    
     case 5:
         exit(0); // Exit the program
         break;

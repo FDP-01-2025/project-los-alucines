@@ -1,153 +1,144 @@
 #ifndef ROULETTE_H
 #define ROULETTE_H
 
+#include "Player_profiles.h"
+
+void playRoulette(Player &player);
+
+#endif // ROULETTE_H
+
 #include <iostream>
-#include <string>
 #include <cstdlib>
 #include <ctime>
+#include <fstream>
+#include <string>
+#include <algorithm>
+
+#include "roulette.h"
+#include "Player_profiles.h"
 
 using namespace std;
 
-// Struct to store player information
-struct Player {
-    string name;
-    int money;
-    int wins;
-};
-
-// Show betting menu
-void showMenu() {
-    cout << "\n--- BETTING OPTIONS ---\n";
-    cout << "1. Exact number (0-36)\n";
-    cout << "2. Color (red or black)\n";
-    cout << "3. Even or odd\n";
-    cout << "Choose an option: ";
-}
-
-// Get the color of the number
 string getColor(int number) {
-    if (number == 0) return "green";
-    return (number % 2 == 0) ? "black" : "red";
+    int reds[] = {1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36};
+    if (number == 0) return "Green";
+    for (int i = 0; i < 18; i++)
+        if (number == reds[i]) return "Red";
+    return "Black";
 }
 
-// Validate bet amount
-int validateBet(int availableMoney) {
+string toLower(string str) {
+    transform(str.begin(), str.end(), str.begin(), ::tolower);
+    return str;
+}
+
+int validateBet(int money) {
     int bet;
-    do {
-        cout << "\nEnter your bet amount (minimum $1): ";
-        cin >> bet;
-        if (bet < 1 || bet > availableMoney) {
-            cout << "Invalid bet. Please try again.\n";
-        }
-    } while (bet < 1 || bet > availableMoney);
+    cin >> bet;
+    if (bet > money || bet < 1) {
+        cout << "Invalid bet! Betting $1 by default.\n";
+        return 1;
+    }
     return bet;
 }
 
-// Main game logic
 void playRoulette(Player &player) {
-    int round = 1;
+    srand((unsigned)time(nullptr));
+    int rounds = 5;
 
-    while (player.money > 0 && round <= 6 && player.wins < 3) {
-        cout << "\n=== ROUND " << round << " ===\n";
-        cout << "Current balance: $" << player.money << endl;
+    cout << R"(
+  _____   _    _ _      _      _       
+ |  __ \ | |  | (_)    | |    | |      
+ | |__) || |__| |_ ___ | | __ | |_ ___ 
+ |  _  / |  __  | / __|| |/ / | __/ _ \
+ | | \ \ | |  | | \__ \|   <  | ||  __/
+ |_|  \_\|_|  |_|_|___/_|\_\  \__\___|
 
+)" << "\n";
+    cout << "===== ROULETTE =====\n";
+    cout << "Starting balance: $" << player.money << "\n";
+    cout << "You will play " << rounds << " rounds.\n";
+    cout << "Bet types:\n"
+         << " 1. Exact number (0‑36) — payout 35×\n"
+         << " 2. Color (Red/Black) — payout 2×\n"
+         << " 3. Even/Odd — payout 2×\n";
+    cout << "Enter a valid bet (min $1).\nPress ENTER to begin...";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.get();
+
+    player.wins = 0;
+    for (int i = 1; i <= rounds && player.money > 0; i++) {
+        system("cls");
+        cout << "ROUND " << i << " — Balance: $" << player.money << "\n";
+        cout << "Choose bet type (1‑3): ";
+        int type; cin >> type;
+        cout << "Enter bet amount: $";
         int bet = validateBet(player.money);
-        showMenu();
 
-        int option;
-        cin >> option;
+        int guessNum = -1;
+        string guessStr;
 
-        int betNumber = -1;
-        string betColor;
-        string betEvenOdd;
-
-        switch (option) {
-            case 1:
-                cout << "Bet on number (0-36): ";
-                cin >> betNumber;
-                if (betNumber < 0 || betNumber > 36) {
-                    cout << "Invalid number. You lose this round.\n";
-                    player.money -= bet;
-                    round++;
-                    continue;
-                }
-                break;
-            case 2:
-                cout << "Bet on color (red/black): ";
-                cin >> betColor;
-                break;
-            case 3:
-                cout << "Bet on even or odd: ";
-                cin >> betEvenOdd;
-                break;
-            default:
-                cout << "Invalid option. You lose this round.\n";
-                player.money -= bet;
-                round++;
-                continue;
+        if (type == 1) {
+            cout << "Pick number (0‑36): ";
+            cin >> guessNum;
+        } else if (type == 2) {
+            cout << "Pick color (Red/Black): ";
+            cin >> guessStr;
+            guessStr = toLower(guessStr);
+        } else if (type == 3) {
+            cout << "Pick (Even/Odd): ";
+            cin >> guessStr;
+            guessStr = toLower(guessStr);
+        } else {
+            cout << "Invalid choice, skipping round.\n";
+            continue;
         }
 
         int result = rand() % 37;
-        string resultColor = getColor(result);
+        string color = getColor(result);
+        cout << "\nWheel spun: " << result << " (" << color << ")\n";
 
-        cout << "Roulette spun... Number: " << result << " - Color: " << resultColor << endl;
+        bool win = false;
+        int payout = 0;
 
-        bool won = false;
-
-        if (option == 1 && result == betNumber) {
-            player.money += bet * 35;
-            player.wins++;
-            won = true;
-        } else if (option == 2 && resultColor == betColor) {
-            player.money += bet;
-            player.wins++;
-            won = true;
-        } else if (option == 3) {
-            if ((betEvenOdd == "even" && result % 2 == 0 && result != 0) ||
-                (betEvenOdd == "odd" && result % 2 != 0)) {
-                player.money += bet;
-                player.wins++;
-                won = true;
+        if (type == 1 && guessNum == result) {
+            win = true; payout = bet * 35;
+        } else if (type == 2 && color.size() && toLower(color) == guessStr) {
+            win = true; payout = bet * 2;
+        } else if (type == 3) {
+            if (result != 0) {
+                if (guessStr == "even" && result % 2 == 0) win = true;
+                if (guessStr == "odd" && result % 2 == 1) win = true;
             }
+            if (win) payout = bet * 2;
         }
 
-        if (!won) {
-            player.money -= bet;
-            cout << "Result: You lost this round.\n";
+        if (win) {
+            cout << "You WON $" << payout << "! 🎉\n";
+            player.money += payout;
+            player.wins++;
         } else {
-            cout << "You won this round!\n";
+            cout << "You LOST $" << bet << ". 💸\n";
+            player.money -= bet;
         }
 
-        round++;
+        cout << "Current balance: $" << player.money << "\n";
+        system("pause");
     }
 
-    // Final result
-    cout << "\n===== FINAL RESULTS =====\n";
-    cout << "Player: " << player.name << endl;
-    cout << "Wins: " << player.wins << endl;
-    cout << "Final balance: $" << player.money << endl;
+    cout << "\nGAME OVER\n";
+    cout << "Final balance: $" << player.money << "\n";
+    cout << "Rounds won: " << player.wins << "\n";
 
-    if (player.wins >= 3)
-        cout << "You won with 3 correct bets!\n";
-    else if (player.money <= 0)
-        cout << "You ran out of money.\n";
-    else
-        cout << "Game ended after 6 rounds.\n";
+    ofstream file("Roulette_scores.txt", ios::app);
+    if (file) {
+        file << "=== ROULETTE ===\n";
+        file << "Player: " << player.name << "\n";
+        file << "Final Money: $" << player.money << "\n";
+        file << "Rounds Won: " << player.wins << "\n";
+        file << "-----------------\n";
+        file.close();
+    }
+
+    cout << "Score saved. Thanks for playing!\n";
 }
-
-// Entry point (main function)
-void startRouletteGame() {
-    srand(time(0));
-    Player player;
-    player.money = 100;
-    player.wins = 0;
-
-    cout << "WELCOME TO ROULETTE\n";
-    cout << "Enter your name: ";
-    cin.ignore();
-    getline(cin, player.name);
-
-    playRoulette(player);
-}
-
-#endif // ROULETTE_H
